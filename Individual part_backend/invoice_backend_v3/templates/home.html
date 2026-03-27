@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard - Receipt Digitizer</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+font-family:'DM Sans',system-ui,sans-serif;
+background:linear-gradient(180deg,#f5d5d8 0%,#e8b4b8 50%,#d4989c 100%);
+background-image:url('/static/back_drop/pattern-2.png');
+background-repeat:repeat;
+background-size:600px auto;
+min-height:100vh;
+color:#1f2937;
+}
+
+/* NAVBAR */
+
+.navbar{
+position:sticky;
+top:0;
+z-index:1000;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:12px 40px;
+background:linear-gradient(135deg,#ff5ba2 0%,#dc2c78 100%);
+}
+
+.nav-left,.nav-right{
+display:flex;
+gap:24px;
+}
+
+.nav-item{
+text-decoration:none;
+color:#fff;
+font-weight:600;
+padding:8px 20px;
+border-radius:10px;
+font-size:14px;
+font-family:'Space Grotesk',sans-serif;
+cursor:pointer;
+background:none;
+border:none;
+}
+
+.nav-item:hover{
+background:#ff6daae4;
+}
+
+.nav-item.active{
+background:linear-gradient(135deg,#ffffff 30%,#ffe7f1 100%);
+color:#f22b84;
+}
+
+/* CONTAINER */
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:20px;
+}
+
+.header{
+text-align:center;
+margin-bottom:40px;
+padding-top:40px;
+}
+
+.header h1{
+font-size:80px;
+font-family:'Space Grotesk',sans-serif;
+color:#f22b84;
+}
+
+.header p{
+color:#4a4a4a;
+font-size:18px;
+}
+
+/* CARD */
+
+.card{
+background-color:rgba(255,255,255,0.95);
+border-radius:24px;
+margin-top:60px;
+padding:40px;
+box-shadow:0 20px 60px rgba(219,39,119,0.15);
+}
+
+/* UPLOAD */
+
+.upload{
+border:1.8px dashed #f22b84;
+padding:60px 30px;
+text-align:center;
+border-radius:16px;
+background:linear-gradient(135deg,#fff5f8 0%,#ffe8f0 100%);
+}
+
+.upload h2{
+color:#f22b84;
+font-family:'Space Grotesk';
+}
+
+input[type=file]{
+display:none;
+}
+
+.btn{
+background:linear-gradient(135deg,#ff5ba2 30%,#dc2c78 100%);
+color:white;
+border:none;
+padding:14px 34px;
+border-radius:10px;
+cursor:pointer;
+margin-top:20px;
+font-weight:600;
+}
+
+/* RESULTS */
+
+.results{
+margin-top:40px;
+}
+
+.section{
+background:#fff;
+border-radius:16px;
+padding:30px;
+margin-bottom:16px;
+border:1px solid rgba(219,39,119,0.1);
+}
+
+.section h3{
+color:#f22b84;
+margin-bottom:20px;
+font-size:24px;
+font-family:'Space Grotesk';
+}
+
+/* TABLE */
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+thead{
+background:linear-gradient(135deg,#ff5ba2 0%,#dc2c78 100%);
+color:white;
+}
+
+th,td{
+padding:16px;
+text-align:left;
+}
+
+tbody tr:hover{
+background:#fff5f8;
+}
+
+/* ANALYTICS */
+
+.stat-row{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:14px;
+margin-bottom:25px;
+}
+
+.stat-pill{
+background:linear-gradient(135deg,#fff5f8 0%,#ffe8f0 100%);
+border-radius:14px;
+padding:18px;
+text-align:center;
+}
+
+.stat-value{
+font-size:26px;
+font-weight:700;
+color:#f22b84;
+}
+
+.chart-wrapper{
+height:420px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+
+<div class="nav-left">
+<a href="#" class="nav-item active">Dashboard</a>
+<a href="#analytics" class="nav-item">Analytics</a>
+</div>
+
+<div class="nav-right">
+
+{% if session.get('role') == 'admin' %}
+<a href="/admin" class="nav-item">Admin Dashboard</a>
+{% endif %}
+
+<span class="nav-item">Welcome, {{ session.get('username') }}</span>
+
+<button class="nav-item" id="logoutBtn">Logout</button>
+
+</div>
+
+</header>
+
+<div class="container">
+
+<div class="header">
+<h1>Receipt & Invoice Digitizer</h1>
+<p>AI-powered receipt analysis and storage</p>
+</div>
+
+<div class="card">
+
+<div class="upload">
+
+<h2>Upload Receipt / Invoice</h2>
+<p>Drag & drop or click to select</p>
+
+<button class="btn" id="uploadBtn">Select File</button>
+
+<input type="file" id="fileInput" accept="image/*,.pdf">
+
+</div>
+
+<div class="results">
+
+<div class="section">
+
+<h3>Your Receipts</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Date</th>
+<th>Vendor</th>
+<th>Invoice #</th>
+<th>Amount</th>
+<th>Tax</th>
+<th>Actions</th>
+</tr>
+</thead>
+
+<tbody id="receiptsBody"></tbody>
+
+</table>
+
+<p id="noReceipts" style="display:none">No receipts uploaded yet.</p>
+
+</div>
+
+<div class="section" id="analytics">
+
+<h3>Spending Over Time</h3>
+
+<div class="stat-row">
+
+<div class="stat-pill">
+<div class="stat-value" id="statTotal">0</div>
+<div>Total Spent</div>
+</div>
+
+<div class="stat-pill">
+<div class="stat-value" id="statTax">0</div>
+<div>Total Tax</div>
+</div>
+
+<div class="stat-pill">
+<div class="stat-value" id="statCount">0</div>
+<div>Receipts</div>
+</div>
+
+<div class="stat-pill">
+<div class="stat-value" id="statAvg">0</div>
+<div>Avg per Receipt</div>
+</div>
+
+</div>
+
+<div class="chart-wrapper">
+<canvas id="spendingChart"></canvas>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+document.getElementById("logoutBtn").onclick = async ()=>{
+await fetch("/api/logout",{method:"POST"});
+window.location="/";
+};
+
+const fileInput = document.getElementById("fileInput");
+const uploadBtn = document.getElementById("uploadBtn");
+
+uploadBtn.onclick = ()=>fileInput.click();
+
+fileInput.addEventListener("change",e=>{
+const file=e.target.files[0];
+if(file)uploadFile(file);
+});
+
+async function uploadFile(file){
+
+const formData=new FormData();
+formData.append("file",file);
+
+const res=await fetch("/api/upload",{method:"POST",body:formData});
+const data=await res.json();
+
+if(data.success){
+loadReceipts();
+loadAnalytics();
+}else{
+alert("Upload failed");
+}
+
+}
+
+async function loadReceipts(){
+
+const res=await fetch("/api/receipts");
+const data=await res.json();
+
+const tbody=document.getElementById("receiptsBody");
+tbody.innerHTML="";
+
+if(!data.receipts || data.receipts.length===0){
+document.getElementById("noReceipts").style.display="block";
+return;
+}
+
+document.getElementById("noReceipts").style.display="none";
+
+data.receipts.forEach(r=>{
+
+const tr=document.createElement("tr");
+
+tr.innerHTML=`
+<td>${r.date||"-"}</td>
+<td>${r.vendor_name||"-"}</td>
+<td>${r.invoice_number||"-"}</td>
+<td>$${r.total_amount||0}</td>
+<td>$${r.tax||0}</td>
+<td>
+<button onclick="window.open('/uploads/${r.filename}')">View</button>
+<button onclick="deleteReceipt(${r.receipt_id})">Delete</button>
+</td>
+`;
+
+tbody.appendChild(tr);
+
+});
+
+}
+
+async function deleteReceipt(id){
+
+if(!confirm("Delete this receipt?"))return;
+
+await fetch(`/api/receipts/${id}`,{method:"DELETE"});
+
+loadReceipts();
+loadAnalytics();
+
+}
+
+let chart;
+
+async function loadAnalytics(){
+
+const res=await fetch("/api/analytics/spending");
+const data=await res.json();
+
+if(!data.success)return;
+
+document.getElementById("statTotal").innerText="$"+data.summary.grand_total.toFixed(2);
+document.getElementById("statTax").innerText="$"+data.summary.grand_tax.toFixed(2);
+document.getElementById("statCount").innerText=data.summary.total_receipts;
+document.getElementById("statAvg").innerText="$"+data.summary.avg_amount.toFixed(2);
+
+const labels=data.data.map(d=>d.date);
+const totals=data.data.map(d=>d.daily_total);
+const taxes=data.data.map(d=>d.daily_tax);
+
+const ctx=document.getElementById("spendingChart");
+
+if(chart)chart.destroy();
+
+chart=new Chart(ctx,{
+type:"line",
+data:{
+labels:labels,
+datasets:[
+{
+label:"Total Amount",
+data:totals,
+borderColor:"#f22b84",
+backgroundColor:"rgba(242,43,132,0.1)",
+fill:true,
+tension:0
+},
+{
+label:"Tax",
+data:taxes,
+borderColor:"#f9a8d4",
+borderDash:[5,5],
+fill:false
+}
+]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false
+}
+});
+
+}
+
+loadReceipts();
+loadAnalytics();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>User Bills</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+margin:0;
+font-family:'DM Sans',sans-serif;
+background:linear-gradient(135deg,#ffffff 0%,#ffe7f1 100%);
+min-height:100vh;
+position:relative;
+}
+
+body::before{
+content:"";
+position:absolute;
+inset:0;
+background-image:url("/static/back_drop/pattern-2.png");
+background-repeat:repeat;
+background-size:400px auto;
+opacity:0.5;
+z-index:0;
+pointer-events:none;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:50px 20px;
+position:relative;
+z-index:1;
+}
+
+.header h1{
+font-family:'Space Grotesk',sans-serif;
+color:#2d2d2d;
+margin-bottom:5px;
+}
+
+.header p{
+color:#555;
+margin-bottom:35px;
+}
+
+.table-card{
+background:rgba(255,255,255,0.95);
+border-radius:20px;
+padding:40px;
+box-shadow:0 20px 60px rgba(219,39,119,0.15);
+border:1px solid rgba(219,39,119,0.1);
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+thead{
+background:#db2777;
+color:white;
+}
+
+th{
+padding:16px;
+text-align:left;
+font-weight:600;
+}
+
+td{
+padding:16px;
+border-bottom:1px solid #eee;
+}
+
+tbody tr:hover{
+background:#fff5f8;
+}
+
+/* FIX: prevent header disappearing */
+thead tr:hover{
+background:#db2777;
+}
+
+/* Fix long vendor text */
+.vendor-cell{
+max-width:320px;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+.back-btn{
+display:inline-block;
+margin-top:35px;
+background:#db2777;
+color:white;
+padding:12px 26px;
+border-radius:8px;
+text-decoration:none;
+font-weight:500;
+transition:0.25s;
+}
+
+.back-btn:hover{
+background:#be185d;
+box-shadow:0 4px 12px rgba(219,39,119,0.35);
+}
+
+.open-link{
+color:#db2777;
+font-weight:500;
+text-decoration:none;
+}
+
+.open-link:hover{
+text-decoration:underline;
+}
+
+.view-btn{
+background:#db2777;
+color:white;
+padding:6px 14px;
+border-radius:6px;
+text-decoration:none;
+font-size:14px;
+}
+
+.view-btn:hover{
+background:#be185d;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>{{ user[0] }}'s Uploaded Bills</h1>
+<p>{{ user[1] }}</p>
+</div>
+
+<div class="table-card">
+
+<table>
+
+<thead>
+<tr>
+<th>Vendor</th>
+<th>Invoice ID</th>
+<th>Amount</th>
+<th>Date</th>
+<th>View File</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for bill in user_receipts %}
+
+<tr>
+
+<td class="vendor-cell">{{ bill[0] }}</td>
+
+<td>{{ bill[1] }}</td>
+
+<td>₹ {{ bill[2] }}</td>
+
+<td>{{ bill[3].split(' ')[0] }}</td>
+
+<td>
+<a class="view-btn" href="/uploads/{{ bill[4] }}" target="_blank">
+Open
+</a>
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+<a href="/admin" class="back-btn">← Back to Admin</a>
+
+</div>
+
+</body>
+</html>

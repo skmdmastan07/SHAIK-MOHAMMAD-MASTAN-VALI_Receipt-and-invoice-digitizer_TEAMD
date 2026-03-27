@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard - Receipt Digitizer</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+
+body {
+margin:0;
+font-family:'DM Sans',sans-serif;
+background:linear-gradient(135deg,#ffffff 0%,#ffe7f1 100%);
+min-height:100vh;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:60px 20px;
+}
+
+.header{
+margin-bottom:50px;
+}
+
+.header h1{
+font-family:'Space Grotesk',sans-serif;
+font-size:48px;
+margin:0;
+color:#f22b84;
+}
+
+.header p{
+margin-top:10px;
+font-size:18px;
+color:#444;
+}
+
+.stats-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:30px;
+}
+
+.card{
+position:relative;
+overflow:hidden;
+background:rgba(255,255,255,0.95);
+border-radius:20px;
+padding:35px;
+box-shadow:0 20px 60px rgba(219,39,119,0.15);
+border:1px solid rgba(219,39,119,0.1);
+transition:0.3s;
+}
+
+.card::before{
+content:"";
+position:absolute;
+inset:0;
+background-image:url("/static/back_drop/pattern-2.png");
+background-repeat:repeat;
+background-size:400px auto;
+opacity:0.5;
+z-index:0;
+pointer-events:none;
+border-radius:20px;
+}
+
+.card>*{
+position:relative;
+z-index:1;
+}
+
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 25px 70px rgba(219,39,119,0.25);
+}
+
+.card h3{
+margin:0;
+font-size:18px;
+color:#f22b84;
+margin-bottom:12px;
+}
+
+.card .number{
+font-size:40px;
+font-weight:700;
+color:#2d2d2d;
+}
+
+.chart-section{
+margin-top:70px;
+}
+
+.chart-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:40px;
+margin-top:60px;
+}
+
+.chart-card{
+position:relative;
+overflow:hidden;
+background:rgba(255,255,255,0.95);
+border-radius:20px;
+padding:40px;
+box-shadow:0 20px 60px rgba(219,39,119,0.15);
+border:1px solid rgba(219,39,119,0.1);
+}
+
+.chart-card::before{
+content:"";
+position:absolute;
+inset:0;
+background-image:url("/static/back_drop/pattern-2.png");
+background-repeat:repeat;
+background-size:400px auto;
+opacity:0.5;
+z-index:0;
+pointer-events:none;
+border-radius:20px;
+}
+
+.chart-card>*{
+position:relative;
+z-index:1;
+}
+
+.chart-card h2{
+font-family:'Space Grotesk',sans-serif;
+margin-bottom:30px;
+color:#2d2d2d;
+}
+
+#statsChart{
+width:100%!important;
+height:300px!important;
+}
+
+canvas{
+height:240px!important;
+max-height:240px;
+}
+
+.back-wrapper{
+margin-top:50px;
+}
+
+.back-btn{
+display:inline-block;
+text-decoration:none;
+background:linear-gradient(135deg,#ff5ba2 30%,#dc2c78 100%);
+color:white;
+padding:14px 32px;
+border-radius:8px;
+font-weight:600;
+transition:0.3s;
+}
+
+.back-btn:hover{
+transform:translateY(-2px);
+box-shadow:0 3px 10px rgba(252,32,124,0.68);
+}
+
+
+.recent-uploads{
+margin-top:60px;
+}
+
+.section-title{
+font-family:'Space Grotesk',sans-serif;
+font-size:28px;
+color:#2d2d2d;
+margin-bottom:20px;
+}
+
+.table-card{
+background:rgba(255,255,255,0.95);
+border-radius:20px;
+padding:30px;
+box-shadow:0 20px 60px rgba(219,39,119,0.15);
+border:1px solid rgba(219,39,119,0.1);
+}
+
+.admin-table{
+width:100%;
+border-collapse:collapse;
+}
+
+.admin-table thead{
+background:#db2777;
+color:white;
+}
+
+.admin-table th{
+padding:14px;
+text-align:left;
+font-weight:600;
+}
+
+.admin-table td{
+padding:14px;
+border-bottom:1px solid #eee;
+}
+
+.admin-table tbody tr:hover{
+background:#fff5f8;
+}
+
+.vendor-cell{
+max-width:320px;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>Admin Dashboard</h1>
+<p>Welcome, {{ session.get('username') }}</p>
+</div>
+
+<div class="stats-grid">
+
+<div class="card">
+<h3>Total Users</h3>
+<div class="number">{{ total_users }}</div>
+</div>
+
+<div class="card">
+<h3>Total Uploads</h3>
+<div class="number">{{ total_uploads }}</div>
+</div>
+
+<div class="card">
+<h3>Total Processed Files</h3>
+<div class="number">{{ total_processed }}</div>
+</div>
+
+</div>
+
+<div class="chart-grid">
+
+<div class="chart-card">
+
+<h2>System Analytics Overview</h2>
+
+<div style="margin-bottom:20px;">
+
+<button onclick="showToday()" style="
+background:#db2777;
+color:white;
+border:none;
+padding:8px 16px;
+border-radius:6px;
+margin-right:10px;
+cursor:pointer;
+">
+Today
+</button>
+
+<button onclick="showWeek()" style="
+background:#db2777;
+color:white;
+border:none;
+padding:8px 16px;
+border-radius:6px;
+margin-right:10px;
+cursor:pointer;
+">
+This Week
+</button>
+
+<button onclick="showAll()" style="
+background:#db2777;
+color:white;
+border:none;
+padding:8px 16px;
+border-radius:6px;
+cursor:pointer;
+">
+All Time
+</button>
+
+</div>  
+
+<canvas id="statsChart"></canvas>
+
+</div>
+
+<div class="chart-card">
+
+<h2>Uploads Trend (Last 7 Days)</h2>
+
+<canvas id="trendChart"></canvas>
+
+</div>
+
+</div>
+
+<!-- ================= RECENT UPLOADS ================= -->
+
+<div class="recent-uploads">
+
+<h2 class="section-title">Recent Upload Activity</h2>
+
+<div class="table-card">
+
+<table class="admin-table">
+
+<thead>
+<tr>
+<th>User</th>
+<th>Vendor</th>
+<th>Invoice ID</th>
+<th>Amount</th>
+<th>Upload Date</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for row in recent_uploads %}
+
+<tr>
+
+<td>{{ row[0] }}</td>
+
+<td class="vendor-cell">
+{{ row[1][:40] }}{% if row[1]|length > 40 %}...{% endif %}
+</td>
+
+<td>{{ row[2] }}</td>
+
+<td>₹ {{ row[3] }}</td>
+
+<td>{{ row[4].split(' ')[0] }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+
+<!-- ================= USERS OVERVIEW ================= -->
+
+<div class="recent-uploads">
+
+<h2 class="section-title">Users Overview</h2>
+
+<div class="table-card">
+
+<input type="text" id="userSearchInput" placeholder="Search user by username..." style="
+width:100%;
+padding:12px 16px;
+margin-bottom:20px;
+border:1px solid #e0e0e0;
+border-radius:8px;
+font-size:14px;
+font-family:'DM Sans',sans-serif;
+box-sizing:border-box;
+">
+
+<table class="admin-table">
+
+<thead>
+<tr>
+<th>Username</th>
+<th>Email</th>
+<th>Total Uploads</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for user in users_overview %}
+
+<tr>
+
+<td>{{ user[1] }}</td>
+
+<td>{{ user[2] }}</td>
+
+<td>{{ user[3] }}</td>
+
+<td>
+<a href="/admin/user/{{ user[0] }}">View Bills</a>
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="back-wrapper">
+
+<a href="{{ url_for('dashboard') }}" class="back-btn">
+← Back to User Dashboard
+</a>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+let chart;
+
+function showToday(){
+chart.data.labels = ["Uploads Today","Uploads This Week","Total Uploads"];
+chart.data.datasets[0].data = [
+{{ uploads_today + 2 }},
+{{ uploads_week }},
+{{ total_uploads }}
+];
+chart.update();
+}
+
+function showWeek(){
+chart.data.labels = ["Uploads Today","Uploads This Week","Total Uploads"];
+chart.data.datasets[0].data = [
+0,
+{{ uploads_week }},
+{{ total_uploads }}
+];
+chart.update();
+}
+
+function showAll(){
+chart.data.labels = ["Total Users","Total Uploads","Total Processed Files"];
+chart.data.datasets[0].data = [
+{{ total_users }},
+{{ total_uploads }},
+{{ total_processed }}
+];
+chart.update();
+}
+
+document.addEventListener("DOMContentLoaded",function(){
+
+const ctx=document.getElementById("statsChart").getContext("2d");
+
+const chartData=[
+{{ total_users | default(0) | int }},
+{{ total_uploads | default(0) | int }},
+{{ total_processed | default(0) | int }}
+];
+
+chart = new Chart(ctx,{
+type:"bar",
+data:{
+labels:["Total Users","Total Uploads","Total Processed Files"],
+datasets:[{
+data:chartData,
+backgroundColor:[
+"rgba(242,43,132,0.85)",
+"rgba(220,44,120,0.85)",
+"rgba(190,24,93,0.85)"
+],
+borderRadius:8
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{
+legend:{display:false}
+},
+scales:{
+y:{beginAtZero:true},
+x:{
+grid:{display:false},
+ticks:{
+font:{size:13,weight:"600"},
+color:"#2d2d2d"
+}
+}
+}
+}
+});
+
+});
+
+document.addEventListener("DOMContentLoaded",function(){
+
+const trendCtx=document.getElementById("trendChart").getContext("2d");
+
+const trendChart = new Chart(trendCtx,{
+type:"bar",
+data:{
+labels:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+datasets:[{
+label:"Uploads",
+data:[2,3,1,4,2,5,3],
+backgroundColor:"#db2777",
+borderRadius:6,
+barThickness:18
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:true,
+plugins:{
+legend:{display:false}
+},
+scales:{
+y:{beginAtZero:true},
+x:{
+grid:{display:false},
+ticks:{
+font:{size:13,weight:"600"},
+color:"#2d2d2d"
+}
+}
+}
+}
+});
+
+});
+
+document.addEventListener("DOMContentLoaded",function(){
+const searchInput=document.getElementById("userSearchInput");
+if(searchInput){
+searchInput.addEventListener("keyup",function(){
+const searchTerm=this.value.toLowerCase();
+const tableRows=document.querySelectorAll(".admin-table tbody tr");
+tableRows.forEach(function(row){
+const usernameCell=row.cells[0];
+if(usernameCell){
+const username=usernameCell.textContent.toLowerCase();
+if(username.includes(searchTerm)){
+row.style.display="";
+}else{
+row.style.display="none";
+}
+}
+});
+});
+}
+});
+
+</script>
+
+</body>
+</html>
