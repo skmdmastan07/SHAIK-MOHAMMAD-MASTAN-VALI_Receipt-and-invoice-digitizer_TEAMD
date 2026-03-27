@@ -1,0 +1,97 @@
+Day 14 – Clustering & KNN
+🔹 Elbow Method
+
+Used to find best K (number of clusters)
+
+👉 Idea:
+
+K increases → error (WCSS) decreases
+After some point → no big change
+That bend point = Elbow (best K)
+
+👉 Steps:
+
+Try K = 1 to 10
+Calculate WCSS
+Plot graph
+Pick elbow point
+
+👉 Code:
+
+wcss = []
+for i in range(1,11):
+    kmeans = KMeans(n_clusters=i)
+    kmeans.fit(X)
+    wcss.append(kmeans.inertia_)
+
+plt.plot(range(1,11), wcss)
+plt.show()
+🔹 K-Means Clustering
+
+👉 Type: Unsupervised Learning
+
+👉 What it does:
+
+Groups data into K clusters
+
+👉 Steps:
+
+Select K
+Initialize centroids
+Assign points to nearest centroid
+Update centroids
+Repeat
+
+👉 Code:
+
+kmeans = KMeans(n_clusters=3)
+kmeans.fit(X)
+
+labels = kmeans.labels_
+centroids = kmeans.cluster_centers_
+🔹 KNN (K-Nearest Neighbors)
+
+👉 Type: Supervised Learning
+
+👉 Used for:
+
+Classification
+Regression
+
+👉 Idea:
+
+Check nearest K points
+Majority decides output
+
+Example:
+
+If neighbors = A, A, B → result = A
+🔹 Steps in KNN
+Choose K
+Calculate distance
+Pick nearest neighbors
+Classification → majority
+Regression → average
+🔹 Distance Metrics
+
+Used to measure closeness
+
+Euclidean
+Manhattan
+🔹 Manhattan Distance
+
+👉 Formula:
+
+|x2 - x1| + |y2 - y1|
+
+👉 Example:
+A(1,2), B(4,6)
+
+= |4-1| + |6-2|
+= 3 + 4 = 7
+
+🔹 KNN Code
+model = KNeighborsClassifier(n_neighbors=3)
+model.fit(X_train, y_train)
+
+prediction = model.predict(X_test)
