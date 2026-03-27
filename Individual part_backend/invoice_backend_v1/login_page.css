@@ -1,0 +1,118 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: #f4c9cf; /* soft pink background like image */
+    height: 100vh;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-box {
+    background: #fff5f7; /* very light pink card */
+    width: 350px;
+    padding: 30px;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(180, 60, 100, 0.15); /* pink-tinted shadow */
+    text-align: center;
+}
+
+/* Heading */
+.logo {
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #2b2b2b; /* dark text like image */
+}
+
+/* Input fields */
+.input-box {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1.5px solid #d48a9c; /* pink border */
+    border-radius: 4px;
+    font-size: 14px;
+    color: #2b2b2b; /* dark text */
+    background-color: #ffffff;
+}
+
+/* Placeholder text */
+.input-box::placeholder {
+    color: #5a5a5a; /* slightly dark placeholder */
+}
+
+.input-box:focus {
+    outline: none;
+    border-color: #c94a78; /* stronger pink focus */
+}
+
+/* Sign in button */
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background: #d63384; /* pink button like image */
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.login-btn:hover {
+    background: #b92d70;
+}
+
+/* Forgot password & Sign up */
+.links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    font-size: 13px;
+}
+
+.links a {
+    text-decoration: none;
+    color: #444444; /* dark grey like image */
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+/* OR text */
+.or-text {
+    margin: 20px 0 10px;
+    font-size: 13px;
+    color: #555555; /* darker OR text */
+}
+
+/* Social login */
+.social-login {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.social {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid #d48a9c; /* pink border */
+    background: #ffffff;
+    cursor: pointer;
+    font-size: 16px;
+    color: #2b2b2b; /* dark icon */
+}
+
+.social:hover {
+    background: #f7dbe2; /* light pink hover */
+}

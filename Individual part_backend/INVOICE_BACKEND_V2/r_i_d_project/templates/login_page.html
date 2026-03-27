@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Receipt & Invoice Digitizer</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://unpkg.com/i18next@23/dist/umd/i18next.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+font-family:'DM Sans',system-ui,sans-serif;
+background:linear-gradient(180deg,#f5d5d8 0%,#e8b4b8 50%,#d4989c 100%);
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:20px
+}
+
+.auth-container{width:100%;max-width:420px}
+
+.page-header{text-align:left;margin-bottom:20px;padding-left:8px}
+.page-header h1{
+font-family:'Space Grotesk',sans-serif;
+font-size:32px;
+font-weight:700;
+color:#2d2d2d;
+letter-spacing:-2px;
+margin-bottom:8px
+}
+.page-header p{font-size:15px;color:#4a4a4a;font-weight:500}
+
+.card{
+background:rgba(255,255,255,.95);
+border-radius:24px;
+padding:40px;
+box-shadow:0 20px 60px rgba(219,39,119,.15);
+border:1px solid rgba(219,39,119,.1)
+}
+
+/* Welcome + Globe */
+.welcome-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:18px
+}
+
+.welcome-row h2{
+font-family:'Space Grotesk',sans-serif;
+font-size:24px;
+font-weight:700;
+color:#db2777
+}
+
+.lang-btn{
+width:36px;height:36px;
+border-radius:50%;
+border:none;
+background:white;
+font-size:18px;
+cursor:pointer;
+box-shadow:0 2px 8px rgba(0,0,0,.2)
+}
+
+.lang-menu{
+position:absolute;
+right:300px;
+top:120px;
+background:white;
+border-radius:10px;
+box-shadow:0 10px 25px rgba(0,0,0,.2);
+display:none;
+overflow:hidden;
+width:150px;
+z-index:100
+}
+
+.lang-menu button{
+width:100%;
+padding:10px 14px;
+border:none;
+background:white;
+text-align:left;
+cursor:pointer;
+font-size:14px
+}
+.lang-menu button:hover{background:#fff5f8}
+
+/* Inputs */
+.input-group{margin-bottom:16px}
+.input-group label{
+display:block;
+font-size:13px;
+font-weight:600;
+color:#4a4a4a;
+margin-bottom:6px;
+text-transform:uppercase
+}
+.input-group input{
+width:100%;
+padding:14px 18px;
+border:2px solid #f3b8cd;
+border-radius:10px;
+font-size:15px
+}
+.input-group input:focus{
+outline:none;
+border-color:#db2777;
+background:#fff5f8;
+box-shadow:0 0 0 3px rgba(219,39,119,.1)
+}
+
+/* Button */
+.btn{
+width:100%;
+padding:14px;
+background:#db2777;
+color:white;
+border:none;
+border-radius:10px;
+font-size:15px;
+font-weight:600;
+cursor:pointer;
+margin-top:8px
+}
+.btn:hover{
+background:#be185d;
+transform:translateY(-2px);
+box-shadow:0 6px 20px rgba(219,39,119,.35)
+}
+
+/* Links */
+.links-row{
+display:flex;
+justify-content:space-between;
+margin-top:20px;
+font-size:13px
+}
+.links-row a{color:#db2777;text-decoration:none}
+.links-row a:hover{color:#be185d;text-decoration:underline}
+
+.divider{
+display:flex;
+align-items:center;
+gap:12px;
+margin:24px 0;
+color:#9ca3af;
+font-size:13px
+}
+.divider::before,.divider::after{
+content:'';
+flex:1;
+height:1px;
+background:rgba(219,39,119,.15)
+}
+
+.social-row{text-align:center}
+.social-btn{
+width:48px;height:48px;
+border-radius:50%;
+border:2px solid rgba(219,39,119,.25);
+background:white;
+font-weight:700;
+color:#db2777;
+cursor:pointer
+}
+.social-btn:hover{
+background:#fff5f8;
+border-color:#db2777;
+transform:translateY(-2px)
+}
+</style>
+</head>
+
+<body>
+<div class="auth-container">
+
+<div class="page-header">
+<h1 data-i18n="title">Receipt & Invoice Digitizer</h1>
+<p data-i18n="subtitle">AI-powered receipt analysis and storage</p>
+</div>
+
+<div class="card">
+
+<div class="welcome-row">
+<h2 data-i18n="welcome">Welcome back</h2>
+<button class="lang-btn" id="langToggle">🌐</button>
+</div>
+
+<div class="lang-menu" id="langMenu">
+<button data-lang="en">English</button>
+<button data-lang="hi">हिंदी</button>
+<button data-lang="te">తెలుగు</button>
+<button data-lang="ta">தமிழ்</button>
+<button data-lang="kn">ಕನ್ನಡ</button>
+<button data-lang="ml">മലയാളം</button>
+</div>
+
+<form id="loginForm">
+<div class="input-group">
+<label data-i18n="username_label">Username or Email</label>
+<input id="username" data-i18n-placeholder="username_placeholder" required>
+</div>
+
+<div class="input-group">
+<label data-i18n="password_label">Password</label>
+<input id="password" type="password" data-i18n-placeholder="password_placeholder" required>
+</div>
+
+<button class="btn" data-i18n="signin">Sign In</button>
+</form>
+
+<div class="links-row">
+<a href="/forgot_password_page" data-i18n="forgot">Forgot Password?</a>
+<a href="/register_page" data-i18n="create">Create an account</a>
+</div>
+
+<div class="divider" data-i18n="or_signin_with" >or sign in with</div>
+
+<div class="social-row">
+
+  <!-- Google config -->
+  <div id="g_id_onload"
+       data-client_id="439011057235-c0gilscrb079mr34uhmupi0di66q9heh.apps.googleusercontent.com"
+       data-callback="handleCredentialResponse">
+  </div>
+
+  <!-- Google button -->
+ <div class="g_id_signin"
+     data-type="standard"
+     data-shape="pill"
+     data-theme="filled"
+     data-text="signin_with"
+     data-size="large">
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+const DEFAULT_LANG = "en";
+
+/* -------- Load saved language -------- */
+const savedLang = localStorage.getItem("app_lang") || DEFAULT_LANG;
+
+i18next.init(
+  { lng: savedLang, fallbackLng: DEFAULT_LANG },
+  () => loadLanguage(savedLang)
+);
+
+async function loadLanguage(lang) {
+  const r = await fetch(`/static/i18n/${lang}.json`);
+  const d = await r.json();
+
+  i18next.addResourceBundle(lang, "translation", d, true, true);
+  i18next.changeLanguage(lang);
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    el.innerText = i18next.t(el.dataset.i18n);
+  });
+
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+    el.placeholder = i18next.t(el.dataset.i18nPlaceholder);
+  });
+}
+
+/* -------- Language menu logic -------- */
+langToggle.onclick = () => {
+  langMenu.style.display = langMenu.style.display === "block" ? "none" : "block";
+};
+
+langMenu.onclick = e => {
+  if (e.target.dataset.lang) {
+    const lang = e.target.dataset.lang;
+
+    /* ✅ SAVE language globally */
+    localStorage.setItem("app_lang", lang);
+
+    loadLanguage(lang);
+    langMenu.style.display = "none";
+  }
+};
+
+document.onclick = e => {
+  if (!langToggle.contains(e.target) && !langMenu.contains(e.target)) {
+    langMenu.style.display = "none";
+  }
+};
+</script>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit',async e=>{
+e.preventDefault();
+const f=new FormData();
+f.append('username',username.value);
+f.append('password',password.value);
+const r=await fetch('/api/login',{method:'POST',body:f});
+const d=await r.json();
+d.success?location.href='/dashboard':alert(d.message||'Login failed');
+});
+</script>
+
+<script>
+async function handleCredentialResponse(response) {
+
+    const r = await fetch("/api/google-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: response.credential })
+    });
+
+    const d = await r.json();
+
+    if (d.success) {
+        window.location.href = "/dashboard";
+    } else {
+        alert("Google login failed");
+    }
+}
+</script>
+</body>
+</html>
