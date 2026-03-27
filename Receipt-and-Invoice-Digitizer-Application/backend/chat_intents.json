@@ -1,0 +1,20 @@
+{
+  "intents":[
+    {"tag":"greeting"},
+    {"tag":"total_spending"},
+    {"tag":"receipt_count"},
+    {"tag":"total_tax"},
+    {"tag":"top_vendor"},
+    {"tag":"monthly_spending"},
+    {"tag":"recent_receipts"},
+    {"tag":"navigate_dashboard"},
+    {"tag":"navigate_analytics"},
+    {"tag":"navigate_digitizer"},
+    {"tag":"navigate_receipts"},
+    {"tag":"help"},
+    {"tag":"receipt_definition"},
+    {"tag":"invoice_definition"},
+    {"tag":"tax_definition"},
+    {"tag":"none"}
+  ]
+}
