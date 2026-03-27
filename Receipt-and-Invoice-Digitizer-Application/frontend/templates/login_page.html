@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Receipt & <br>Invoice Digitizer</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://unpkg.com/i18next@23/dist/umd/i18next.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<script>
+const savedTheme = localStorage.getItem("theme");
+if(savedTheme === "dark"){
+  document.addEventListener("DOMContentLoaded", () => {
+    document.body.classList.add("dark");
+  });
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+/* THEME VARIABLES */
+:root{
+--bg-gradient: linear-gradient(135deg, #ffffff 0%, #ffe7f1 100%);
+--card-bg: rgba(255,255,255,0.95);
+--text-main:#2d2d2d;
+--text-sub:#4a4a4a;
+}
+
+body.dark{
+--bg-gradient: linear-gradient(180deg,#1a1a1a 0%,#080808 50%,#000000 100%);
+--card-bg:#1f1f1f;
+--text-main:#ffffff;
+--text-sub:#cfcfcf;
+}
+
+body{
+font-family:'DM Sans',system-ui,sans-serif;
+background: var(--bg-gradient);
+min-height:100vh;
+display:flex;
+flex-direction: column;
+align-items:center;
+justify-content:center;
+padding:40px 20px;
+margin-bottom: 50px;
+}
+
+/* Header lives outside auth-container — unconstrained */
+.page-header{
+    text-align: center;
+    margin-bottom: 32px;
+    margin-top: 28px;
+    width: 100%;
+}
+
+.page-header h1{
+font-family:'Space Grotesk',sans-serif;
+font-weight:700;
+color:#f22b84;
+letter-spacing:-2px;
+margin-bottom:8px;
+font-size: 65px;
+line-height: 1.1;
+}
+
+.page-header p{font-size:16px;color:var(--text-sub);font-weight:500}
+
+/* Auth container only constrains the card */
+.auth-container{
+    width:100%;
+    max-width:460px;
+}
+
+.card{
+    position: relative;
+    background-color: var(--card-bg);
+    border-radius:24px;
+    padding:40px;
+    box-shadow:0 20px 60px rgba(219,39,119,.15);
+    border:1px solid rgba(219,39,119,.1);
+    overflow:hidden;
+}
+.card *{
+    position:relative;
+    z-index:1;
+}
+
+.card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:url('/static/back_drop/leaf.png');
+    background-repeat:repeat;
+    background-size:250px auto;
+    z-index:0;
+    pointer-events:none;
+    border-radius:24px;
+}
+
+body.dark .card{
+  background-image: linear-gradient(180deg, #1f1f1f 0%, #161616 50%, #151515 100%);
+}
+body.dark .card::before {
+    mix-blend-mode: screen;
+    opacity: 0.28;
+}
+
+/* Welcome + Globe */
+.welcome-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:18px
+}
+
+.welcome-row h2{
+font-family:'Space Grotesk',sans-serif;
+font-size:24px;
+font-weight:700;
+color:#f22b84;
+}
+
+.lang-wrapper{
+position:relative;
+}
+
+.lang-btn{
+width:36px;height:36px;
+border-radius:50%;
+border:none;
+background:white;
+font-size:18px;
+cursor:pointer;
+box-shadow:0 2px 8px rgba(0,0,0,.2);
+display:flex;
+align-items:center;
+justify-content:center;
+padding:0;
+}
+
+.lang-btn img{
+width:20px;height:20px;object-fit:contain;
+}
+
+.lang-menu{
+position:absolute;
+left:calc(100% + 8px);
+top:0;
+background:white;
+border-radius:10px;
+box-shadow:0 10px 25px rgba(0,0,0,.2);
+display:none;
+overflow:hidden;
+width:150px;
+z-index:1000;
+}
+
+.lang-menu button{
+width:100%;
+padding:10px 14px;
+border:none;
+background:white;
+text-align:left;
+cursor:pointer;
+font-size:14px
+}
+.lang-menu button:hover{background:#fff5f8}
+
+/* Inputs */
+.input-group{margin-bottom:16px}
+.input-group label{
+display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-sub);
+    margin-bottom: 7px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: 'Space Grotesk', sans-serif;
+}
+.input-group input{
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #f3b8cd;
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    color: #2d2d2d;
+    background: white;
+    transition: all 0.3s ease;
+}
+.input-group input:focus{
+outline:none;
+border-color:#f22b84;
+background:#fff5f8;
+box-shadow:0 0 0 3px rgba(219,39,119,.1)
+}
+
+.input-group input::placeholder {
+    color: #9ca3af;
+    font-weight: 300;
+}
+
+.btn{
+width:100%;
+padding:14px;
+background: linear-gradient(135deg, #ff5ba2 30%, #dc2c78 100%);
+color:white;
+border:none;
+border-radius:10px;
+font-size:15px;
+font-weight:600;
+cursor:pointer;
+margin-top:8px;
+font-family: 'DM Sans', sans-serif;
+transition: all 0.3s ease;
+}
+.btn:hover{
+transform: translateY(-2px);
+box-shadow: 0 3px 10px rgba(252, 32, 124, 0.683);
+}
+
+/* Links */
+.links-row{
+display:flex;
+justify-content:space-between;
+margin-top:20px;
+font-size:13px
+}
+.links-row a{color:#f22b84;text-decoration:none;font-weight: 500}
+.links-row a:hover{color:#be185d;text-decoration:underline}
+
+.divider{
+display:flex;
+align-items:center;
+gap:12px;
+margin:24px 0;
+color:#9ca3af;
+font-size:13px
+}
+.divider::before,.divider::after{
+content:'';
+flex:1;
+height:1px;
+background:rgba(219,39,119,.15)
+}
+
+.social-row{
+    text-align:center
+}
+
+/* Dark mode inputs */
+body.dark .input-group input{
+background:rgb(239, 236, 236);
+color:black;
+border-color:#444;
+}
+
+body.dark .input-group input::placeholder{
+color:black;
+opacity:1;
+}
+
+body.dark .lang-btn{
+background:white;
+color:white;
+}
+
+@media (max-width: 480px) {
+    .page-header h1 { font-size: 48px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Header outside auth-container — spans full width freely -->
+<div class="page-header">
+    <h1>Receipt & Invoice <br>Digitizer</h1>
+    <p data-i18n="subtitle">AI-powered receipt analysis and storage</p>
+</div>
+
+<div class="auth-container">
+<div class="card">
+
+<div class="welcome-row">
+    <h2 data-i18n="welcome">Welcome back</h2>
+<div style="display:flex;gap:8px;align-items:center;">
+    <button class="lang-btn" id="themeToggle"></button>
+    <div class="lang-wrapper">
+        <button class="lang-btn" id="langToggle">🌐</button>
+    </div><!-- lang-wrapper -->
+</div><!-- theme+lang flex wrapper -->
+<div class="lang-menu" id="langMenu" style="position:fixed;z-index:9999;">
+    <button data-lang="en">English</button>
+    <button data-lang="hi">हिंदी</button>
+    <button data-lang="te">తెలుగు</button>
+    <button data-lang="ta">தமிழ்</button>
+    <button data-lang="kn">ಕನ್ನಡ</button>
+    <button data-lang="ml">മലയാളം</button>
+</div><!-- lang-menu -->
+</div><!-- welcome-row -->
+
+<form id="loginForm">
+<div class="input-group">
+<label data-i18n="username_label">Username or Email</label>
+<input id="username" data-i18n-placeholder="username_placeholder" required>
+</div>
+
+<div class="input-group">
+<label data-i18n="password_label">Password</label>
+<input id="password" type="password" data-i18n-placeholder="password_placeholder" required>
+</div>
+
+<button class="btn" type="submit" data-i18n="signin">Sign In</button>
+</form>
+
+<div class="links-row">
+<a href="/forgot_password_page" data-i18n="forgot">Forgot Password?</a>
+<a href="/register_page" data-i18n="create">Create an account</a>
+</div>
+
+<div class="divider" data-i18n="or_signin_with">or sign in with</div>
+
+<div class="social-row">
+  <div id="g_id_onload"
+       data-client_id="439011057235-c0gilscrb079mr34uhmupi0di66q9heh.apps.googleusercontent.com"
+       data-callback="handleCredentialResponse">
+  </div>
+  <div class="g_id_signin"
+       data-type="standard"
+       data-shape="pill"
+       data-theme="filled"
+       data-text="signin_with"
+       data-size="large">
+  </div>
+</div>
+
+</div>
+</div>
+
+<script>
+/* THEME */
+const themeBtn = document.getElementById("themeToggle");
+
+function updateThemeIcon(isDark) {
+    themeBtn.innerHTML = isDark
+        ? '<img src="/static/back_drop/sun.png" alt="Light mode">'
+        : '<img src="/static/back_drop/moon.png" alt="Dark mode">';
+}
+
+function applyTheme(){
+  const t = localStorage.getItem("theme") || "light";
+  const isDark = t === "dark";
+  if(isDark){
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+  updateThemeIcon(isDark);
+}
+
+applyTheme();
+
+themeBtn.onclick = () => {
+  const isDark = document.body.classList.contains("dark");
+  localStorage.setItem("theme", isDark ? "light" : "dark");
+  applyTheme();
+};
+</script>
+
+<script>
+const DEFAULT_LANG = "en";
+const savedLang = localStorage.getItem("app_lang") || DEFAULT_LANG;
+
+i18next.init({ lng: savedLang, fallbackLng: DEFAULT_LANG }, () => loadLanguage(savedLang));
+
+async function loadLanguage(lang) {
+  const r = await fetch(`/static/i18n/${lang}.json`);
+  const d = await r.json();
+  i18next.addResourceBundle(lang, "translation", d, true, true);
+  i18next.changeLanguage(lang);
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    el.innerHTML = i18next.t(el.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+    el.placeholder = i18next.t(el.dataset.i18nPlaceholder);
+  });
+}
+
+langToggle.onclick = (e) => {
+  e.stopPropagation();
+  const rect = langToggle.getBoundingClientRect();
+  langMenu.style.top = rect.top + "px";
+  langMenu.style.left = rect.right + 8 + "px";
+  langMenu.style.display = langMenu.style.display === "block" ? "none" : "block";
+};
+
+langMenu.onclick = e => {
+  if (e.target.dataset.lang) {
+    const lang = e.target.dataset.lang;
+    localStorage.setItem("app_lang", lang);
+    loadLanguage(lang);
+    langMenu.style.display = "none";
+  }
+};
+
+document.onclick = e => {
+  if (!langToggle.contains(e.target) && !langMenu.contains(e.target)) {
+    langMenu.style.display = "none";
+  }
+};
+</script>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const f = new FormData();
+  f.append('username', username.value);
+  f.append('password', password.value);
+  const r = await fetch('/api/login', { method: 'POST', body: f });
+  const d = await r.json();
+  d.success ? location.href = '/dashboard' : alert(d.message || 'Login failed');
+});
+</script>
+
+<script>
+async function handleCredentialResponse(response) {
+    const r = await fetch("/api/google-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: response.credential })
+    });
+    const d = await r.json();
+    if (d.success) {
+        window.location.href = "/dashboard";
+    } else {
+        alert("Google login failed");
+    }
+}
+</script>
+</body>
+</html>

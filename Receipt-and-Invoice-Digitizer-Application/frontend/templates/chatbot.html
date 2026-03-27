@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - Receipt Digitizer</title>
+
+<style>
+
+/* Floating robot button */
+#robot-btn{
+position:fixed;
+bottom:20px;
+right:20px;
+width:60px;
+height:60px;
+background:linear-gradient(135deg,#ff58a3,#fd9cc4);
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
+z-index:1001;
+}
+
+#robot-btn img{
+width:32px;
+height:32px;
+}
+
+/* Chat widget */
+
+#chat-widget{
+position:fixed;
+bottom:90px;
+right:20px;
+width:320px;
+height:420px;
+background:white;
+border-radius:16px;
+display:none;
+flex-direction:column;
+box-shadow:0 15px 30px rgba(0,0,0,0.25);
+overflow:hidden;
+font-family:Arial;
+}
+
+#chat-header{
+background:linear-gradient(135deg,#ff5ba2,#dc2c78);
+color:white;
+padding:12px 16px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-weight:600;
+}
+
+#chat-body{
+flex:1;
+padding:12px;
+overflow-y:auto;
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
+.chat-msg{
+padding:8px 12px;
+border-radius:10px;
+max-width:85%;
+font-size:13px;
+}
+
+.chat-msg.user{
+background:#f22b84;
+color:white;
+align-self:flex-end;
+}
+
+.chat-msg.bot{
+background:#ffe7f1;
+align-self:flex-start;
+}
+
+#chat-input{
+display:flex;
+padding:8px;
+gap:6px;
+border-top:1px solid #eee;
+}
+
+#chat-input input{
+flex:1;
+padding:8px;
+border:1px solid #ddd;
+border-radius:6px;
+}
+
+#chat-input button{
+background:#db2777;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:6px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+<body>
+
+<!-- Chat button -->
+<div id="robot-btn">
+<img src="/static/back_drop/chatbot.png">
+</div>
+
+<!-- Chat window -->
+
+<div id="chat-widget">
+
+<div id="chat-header">
+AI Assistant
+<span id="close-chat">✕</span>
+</div>
+
+<div id="chat-body">
+<div class="chat-msg bot">
+Hi! Ask me about your receipts.
+</div>
+</div>
+
+<div id="chat-input">
+<input id="user-msg" placeholder="Ask something..." onkeydown="if(event.key==='Enter')sendMsg()">
+<button onclick="sendMsg()">Send</button>
+</div>
+
+</div>
+
+
+<script>
+
+const robotBtn = document.getElementById("robot-btn");
+const chatWidget = document.getElementById("chat-widget");
+const closeChat = document.getElementById("close-chat");
+
+robotBtn.onclick = () =>{
+chatWidget.style.display="flex";
+document.getElementById("user-msg").focus();
+};
+
+closeChat.onclick = () =>{
+chatWidget.style.display="none";
+};
+
+
+async function sendMsg(){
+
+const input=document.getElementById("user-msg");
+const msg=input.value.trim();
+if(!msg) return;
+
+input.value="";
+
+const body=document.getElementById("chat-body");
+
+const userBubble=document.createElement("div");
+userBubble.className="chat-msg user";
+userBubble.textContent=msg;
+body.appendChild(userBubble);
+
+const botBubble=document.createElement("div");
+botBubble.className="chat-msg bot";
+botBubble.textContent="Thinking...";
+body.appendChild(botBubble);
+
+body.scrollTop=body.scrollHeight;
+
+try{
+
+const res=await fetch("/api/chat",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+message:msg
+})
+});
+
+const data=await res.json();
+
+botBubble.textContent=data.reply;
+
+}catch(e){
+
+botBubble.textContent="AI error.";
+
+}
+
+body.scrollTop=body.scrollHeight;
+
+}
+
+</script>
+
+</body>
+</html>

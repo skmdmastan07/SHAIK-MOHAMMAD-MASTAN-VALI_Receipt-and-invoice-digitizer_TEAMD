@@ -1,0 +1,143 @@
+{
+  "title": "रसीद और चालान डिजिटाइज़र",
+  "subtitle": "AI-संचालित रसीद विश्लेषण और भंडारण",
+
+  "welcome": "वापस स्वागत है",
+
+  "username_label": "उपयोगकर्ता नाम या ईमेल",
+  "username_placeholder": "अपना उपयोगकर्ता नाम या ईमेल दर्ज करें",
+
+  "password_label": "पासवर्ड",
+  "password_placeholder": "अपना पासवर्ड दर्ज करें",
+
+  "signin": "साइन इन करें",
+  "forgot": "पासवर्ड भूल गए?",
+  "create": "खाता बनाएं",
+
+  "or_signin_with": "या इससे साइन इन करें",
+
+  "forgot_title": "पासवर्ड भूल गए?",
+  "forgot_subtitle": "चिंता न करें — अपना ईमेल दर्ज करें और हम आपको एक रीसेट लिंक भेजेंगे।",
+  "forgot_btn": "रीसेट लिंक भेजें",
+  "forgot_success_msg": "अपना इनबॉक्स जांचें और निर्देशों का पालन करें।",
+
+  "email_label": "ईमेल पता",
+  "email_placeholder": "you@example.com",
+
+  "send_link": "रीसेट लिंक भेजें",
+  "sending": "भेज रहे हैं…",
+
+  "reset_success": "हमने रीसेट लिंक भेजा",
+  "check_inbox": "अपना इनबॉक्स जांचें और निर्देशों का पालन करें।",
+
+  "back_to_login": "← साइन इन पर वापस जाएं",
+  "back_signin": "← साइन इन पर वापस जाएं",
+
+  "register_title": "खाता बनाएं",
+  "create_account": "खाता बनाएं",
+  "create_account_btn": "खाता बनाएं",
+  "register_btn": "खाता बनाएं",
+  "register_username_placeholder": "उपयोगकर्ता नाम चुनें",
+  "register_password_placeholder": "पासवर्ड बनाएं",
+
+  "email": "ईमेल",
+  "password": "पासवर्ड",
+  "phone": "फ़ोन",
+  "phone_label": "फ़ोन",
+  "phone_placeholder": "+91 00000 00000",
+
+  "already_account": "पहले से खाता है?",
+  "signin_link": "साइन इन करें",
+
+  "reset_title": "पासवर्ड रीसेट करें",
+  "reset_password": "पासवर्ड रीसेट करें",
+  "reset_btn": "पासवर्ड रीसेट करें",
+
+  "new_password_label": "नया पासवर्ड",
+  "new_password_placeholder": "नया पासवर्ड दर्ज करें",
+
+  "confirm_password_label": "पासवर्ड की पुष्टि करें",
+  "confirm_password_placeholder": "नया पासवर्ड दोबारा दर्ज करें",
+
+  "reset_password_btn": "पासवर्ड रीसेट करें",
+  "remember_password": "पासवर्ड याद है?",
+
+  "dashboard": "डैशबोर्ड",
+  "analytics": "विश्लेषण",
+  "logout": "लॉग आउट",
+  "welcome_user": "स्वागत है, उपयोगकर्ता",
+
+  "upload_title": "रसीद / चालान अपलोड करें",
+  "upload_subtitle": "खींचें और छोड़ें या चुनने के लिए क्लिक करें",
+  "select_file": "फ़ाइल चुनें",
+
+  "your_receipts": "आपकी रसीदें",
+
+  "search_vendor": "विक्रेता द्वारा खोजें...",
+  "date": "तारीख",
+  "vendor": "विक्रेता",
+  "invoice": "चालान #",
+  "amount": "राशि",
+  "tax": "कर",
+  "actions": "कार्रवाई",
+
+  "view": "देखें",
+  "delete": "हटाएं",
+
+  "no_receipts": "अभी तक कोई रसीद अपलोड नहीं की गई। अपनी पहली रसीद अपलोड करके शुरू करें!",
+
+  "upload_success": "रसीद सफलतापूर्वक अपलोड की गई!",
+  "delete_confirm": "क्या आप इस रसीद को हटाना चाहते हैं?",
+  "delete_success": "रसीद हटाई गई",
+
+  "spending_over_time": "समय के साथ खर्च",
+  "total_spent": "कुल खर्च",
+  "total_tax": "कुल कर",
+  "receipts": "रसीदें",
+  "avg_receipt": "औसत प्रति रसीद",
+
+  "bill_digitizer": "बिल डिजिटाइज़र",
+  "bill_digitizer_subtitle": "डिजिटल कॉपी बनाने के लिए कोई भी रसीद चुनें",
+  "your_receipts_panel": "▸ आपकी रसीदें — एक चुनें",
+  "digitized_bill_panel": "▸ डिजिटाइज़्ड बिल",
+  "loading_receipts": "रसीदें लोड हो रही हैं…",
+  "no_receipts_found": "कोई रसीद नहीं मिली",
+  "upload_from_dashboard": "पहले डैशबोर्ड से बिल अपलोड करें",
+  "error_loading": "रसीदें लोड करने में त्रुटि",
+  "no_results_found": "कोई परिणाम नहीं मिला",
+  "unknown_vendor": "अज्ञात विक्रेता",
+  "no_invoice": "चालान नहीं",
+  "select_receipt_prompt": "एक रसीद चुनें",
+  "select_receipt_hint": "डिजिटाइज़ करने के लिए बाईं ओर किसी रसीद पर क्लिक करें",
+  "print_btn": "🖨 प्रिंट",
+  "view_original_btn": "मूल देखें",
+  "grand_total": "कुल योग",
+  "thank_you_business": "आपके व्यवसाय के लिए धन्यवाद",
+  "digitized_receipt": "डिजिटाइज़्ड रसीद",
+  "description": "विवरण",
+  "admin_dashboard": "एडमिन डैशबोर्ड",
+  "admin_subtitle": "सिस्टम अवलोकन और विश्लेषण",
+  "total_users": "कुल उपयोगकर्ता",
+  "total_uploads": "कुल अपलोड",
+  "total_processed": "कुल प्रोसेस की गई फ़ाइलें",
+  "system_analytics": "सिस्टम विश्लेषण अवलोकन",
+  "back_to_dashboard": "← उपयोगकर्ता डैशबोर्ड पर वापस",
+  "today": "आज",
+  "this_week": "इस सप्ताह",
+  "all_time": "सब समय",
+  "uploads_today": "आज के अपलोड",
+  "uploads_week_label": "इस सप्ताह के अपलोड",
+  "uploads_trend": "अपलोड ट्रेंड (पिछले 7 दिन)",
+  "recent_activity": "हाल की अपलोड गतिविधि",
+  "users_overview": "उपयोगकर्ता अवलोकन",
+  "user_col": "उपयोगकर्ता",
+  "username_col": "उपयोगकर्ता नाम",
+  "email_col": "ईमेल",
+  "view_bills": "बिल देखें",
+  "search_user": "उपयोगकर्ता नाम से खोजें...",
+  "user_bills": "उपयोगकर्ता बिल",
+  "uploaded_bills": "अपलोड किए गए बिल",
+  "open_btn": "खोलें",
+  "no_bills": "इस उपयोगकर्ता ने अभी तक कोई बिल अपलोड नहीं किया।",
+  "back_to_admin": "← एडमिन पर वापस"
+}
