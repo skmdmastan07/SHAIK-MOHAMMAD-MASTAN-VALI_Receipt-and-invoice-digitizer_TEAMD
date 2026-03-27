@@ -1,0 +1,268 @@
+DAY 13 – MACHINE LEARNING (ML)
+
+
+Machine Learning (ML):
+
+Machine Learning is a part of Artificial Intelligence.
+It allows computers to learn from data and improve automatically without writing exact rules.
+
+In simple words:
+Instead of telling the computer what to do step-by-step,
+we give it data and it learns patterns.
+
+Machines can:
+Learn from data
+Identify patterns
+Make predictions
+Improve over time
+
+
+--------------------------------------------------
+
+Types of Machine Learning:
+
+There are 3 main types:
+
+1) Supervised Learning
+2) Unsupervised Learning
+3) Reinforcement Learning
+
+
+--------------------------------------------------
+
+1) Supervised Learning
+
+In supervised learning:
+The model is trained using labeled data.
+Input and correct output are already given.
+
+Example:
+If we give house size and actual price,
+the model learns how price depends on size.
+
+Two types:
+
+
+A) Classification
+
+Used when output is categorical (fixed categories).
+
+Examples:
+Spam or Not spam
+Yes or No
+0 or 1
+Disease or No disease
+
+Output is a label.
+
+
+B) Regression
+
+Used when output is numeric (continuous value).
+
+Examples:
+House price prediction
+Temperature prediction
+Sales prediction
+
+Output is a number.
+
+
+--------------------------------------------------
+
+2) Unsupervised Learning
+
+In unsupervised learning:
+No labeled output is given.
+The model finds patterns by itself.
+
+Example:
+Grouping customers based on buying behavior.
+
+Main type:
+
+
+Clustering
+
+Groups similar data together.
+
+Examples:
+Customer segmentation
+Grouping similar news articles
+Market segmentation
+
+
+--------------------------------------------------
+
+3) Reinforcement Learning
+
+Learning based on trial and error.
+
+Model interacts with environment.
+It receives reward for correct action.
+It receives penalty for wrong action.
+
+Examples:
+Game playing AI
+Robotics
+Self-driving cars
+
+
+--------------------------------------------------
+
+Embeddings
+
+Embedding means converting text into numbers (vectors).
+
+Computers understand numbers, not text.
+
+Example:
+"Cat" → [0.12, 0.45, 0.78, ...]
+
+Used in:
+Chatbots
+Search engines
+Recommendation systems
+Semantic similarity
+
+
+--------------------------------------------------
+
+Overfitting and Underfitting
+
+Overfitting:
+Model learns too much from training data.
+Performs very well on training data.
+Performs poorly on new data.
+
+Happens when model memorizes instead of learning.
+
+Underfitting:
+Model learns too little.
+Poor performance on both training and testing data.
+Happens when model is too simple.
+
+
+--------------------------------------------------
+
+Linear Regression
+
+Used for regression problems.
+Predicts continuous numeric value.
+
+Example:
+Predict house price using:
+Size
+Location
+Number of rooms
+
+Output:
+Numeric value.
+
+
+--------------------------------------------------
+
+Logistic Regression
+
+Used for classification problems.
+Output is probability between 0 and 1.
+
+Example:
+Spam detection
+Disease prediction
+
+Final output:
+Yes or No
+0 or 1
+
+
+--------------------------------------------------
+
+Scikit-Learn (sklearn)
+
+Popular Python library for machine learning.
+
+Used for:
+Model building
+Data preprocessing
+Evaluation
+
+Import example:
+from sklearn.linear_model import LinearRegression
+
+Used for:
+Linear regression
+Logistic regression
+Decision trees
+Clustering
+
+
+--------------------------------------------------
+
+Decision Tree
+
+A supervised learning algorithm.
+
+Can be used for:
+Classification
+Regression
+
+Structure:
+Root node – starting point
+Branches – decision conditions
+Leaf node – final result
+
+Example:
+Is temperature > 30?
+Yes → Go right
+No → Go left
+
+
+--------------------------------------------------
+
+OCR (Optical Character Recognition)
+
+OCR is used to extract text from images or documents.
+
+Common OCR Tools:
+
+
+PaddleOCR:
+Deep learning based OCR.
+Used for multilingual text and invoices.
+
+
+Tesseract OCR:
+Open-source OCR engine by Google.
+Python wrapper: pytesseract
+
+
+Doctr:
+Deep learning OCR library for document text detection.
+
+
+Surya OCR:
+Lightweight OCR model for document extraction.
+
+
+EasyOCR:
+Simple Python OCR library.
+Supports multiple languages.
+
+
+--------------------------------------------------
+
+Regex (Regular Expression)
+
+Used for pattern matching in text.
+
+Example:
+\d{10}
+Used to extract 10-digit phone number.
+
+Used after OCR to:
+Clean text
+Extract invoice number
+Extract dates
+Extract total amount
+

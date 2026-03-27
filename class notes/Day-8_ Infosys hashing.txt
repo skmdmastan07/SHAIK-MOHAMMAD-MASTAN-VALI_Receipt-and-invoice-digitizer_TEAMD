@@ -1,0 +1,189 @@
+DAY-8 — INFOSYS HASHING NOTES
+
+Hashing
+A technique used to protect sensitive data like passwords.
+
+Important Rule
+Never store passwords directly in the database.
+Passwords must be converted into a secure form before storing.
+
+Hashing Meaning
+Hashing converts a password into a fixed-length unreadable value using a mathematical algorithm.
+
+Example
+Input password: mastan
+Hashed output: 3$47&s6J85$# (example form)
+
+Even if the same password is entered again, the hash may look different because of salting.
+
+One-Way Process
+Hash cannot be converted back to the original password.
+This makes it secure.
+
+
+-------------------------------------------------
+
+
+Difference Between Hashing, Encoding, Encryption
+
+Hashing
+One-way transformation
+Cannot be reversed
+
+Encoding
+Used for data representation
+Can be decoded back
+
+Encryption
+Secures data using keys
+Can be decrypted back to original
+
+
+
+--------------------------------------
+
+
+Bcrypt Hashing (Python)
+
+bcrypt
+A Python library used for secure password hashing.
+
+Install
+pip install bcrypt
+
+Correct Import
+import bcrypt
+
+Basic Hashing Example
+
+import bcrypt
+
+password = "mastan".encode()
+
+salt = bcrypt.gensalt()
+hashed = bcrypt.hashpw(password, salt)
+
+print(hashed)
+
+
+
+---------------------------------------------
+
+
+
+Password Verification Example
+
+entered_password = "mastan".encode()
+
+if bcrypt.checkpw(entered_password, hashed):
+print("Password matched")
+else:
+print("Invalid password")
+
+This is how login systems verify passwords without storing real ones
+
+
+
+-----------------------------
+
+
+Python String Built-in Methods
+(Method names always start with lowercase)
+
+strip()
+Removes spaces from both sides
+
+Example
+text = " mastan "
+print(text.strip())
+
+join()
+Joins elements using a separator string
+
+Example
+letters = ["a", "d", "s"]
+print("".join(letters))
+Output → ads
+
+replace()
+Replaces part of string
+
+Example
+text = "I like java"
+print(text.replace("java", "python"))
+
+startswith()
+Checks starting characters
+Returns True or False
+
+endswith()
+Checks ending characters
+
+find()
+Returns index position of substring
+
+isdigit()
+Checks if string contains only numbers
+
+Example
+"1235".isdigit()
+
+isalpha()
+Checks if string contains only letters
+
+
+-------------------------------
+
+Dictionary Methods
+
+get()
+Returns value using key
+
+keys()
+Returns all keys
+
+values()
+Returns all values
+
+items()
+Returns key-value pairs
+
+pop("Age")
+Removes specific key
+
+popitem()
+Removes last inserted item
+
+clear()
+Removes everything
+
+---------------------------
+
+
+Set Methods
+
+add()
+Adds element
+
+remove()
+Removes element (error if missing)
+
+discard()
+Removes element safely
+
+pop()
+Removes random element
+
+clear()
+Empties set
+
+union()
+Combines sets
+
+intersection()
+Common elements
+
+difference()
+Elements present in one set but not another
+
+

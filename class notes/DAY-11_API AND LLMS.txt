@@ -1,0 +1,46 @@
+AI Models
+ 
+Programmed and pre trained for specific use cases
+ 
+Chatbot
+ 
+Image generation
+ 
+Video gene ra tion
+ 
+Prediction
+ 
+Platform/companies
+ 
+Google
+ 
+Gemini
+ 
+Openai gpt model
+ 
+Groq llm
+ 
+Microsoft 
+ 
+Copilot
+ 
+Azure openAI service
+ 
+Production ready or not 
+ 
+LLM
+ 
+nlp  is used for text classication where llm is multimodel where images,text etc
+ 
+AI Platform 
+ 
+Google AI Studio 
+ 
+OpenAI Platform 
+ 
+Groq
+ 
+Rate
+ 
+Token limit
+ 

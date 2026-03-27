@@ -1,0 +1,74 @@
+NLP
+
+natural language processing
+
+
+
+Positive and Negative 
+ 
+NLTK
+ 
+Natural Language Toolkit
+ 
+pip install nltk
+ 
+import nltk
+ 
+nltk.dowload('all')
+ 
+NLTK has 7 main key features 
+ 
+Tokenization
+ 
+Eg: NLP is interesting
+["NLP", "is", "interesting"]
+
+
+
+from nltk.tokenize import word_tokenize
+ 
+Stop word removal
+ 
+This
+ 
+from nltk.corpus import stopwords
+ 
+Stemming
+ 
+from nltk.stem import PorterStemmer
+ 
+Lemmatization
+ 
+Beter bet
+ 
+Better good
+ 
+from nltk.stem import WordNetLemmatizer
+ 
+POS
+
+POS tagging 
+ 
+Part of Spech
+ 
+from nltk.tokenize import word_tokenize
+ 
+NER
+ 
+Name Entity Recognition 
+ 
+nltk.download('words')
+nltk.download('maxent_ne_chunker')
+ 
+Text Processing 
+ 
+Text Preprocessing 
+
+
+
+--------------------------------------------------
+
+MILESTONE - 2
+
+create a OCR model, use llm model to extract text and map the words, like we need to match 
+ 

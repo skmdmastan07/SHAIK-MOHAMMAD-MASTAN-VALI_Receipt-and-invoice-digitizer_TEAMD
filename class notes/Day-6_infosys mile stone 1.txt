@@ -1,0 +1,48 @@
+Day-6_infosys mile stone 1
+Receipt and Invoice Digitizer
+ 
+Milestone 1
+Login page or registration page
+Filed
+Name
+Email
+Password
+Preferred language
+ 
+ Backend
+JWT
+Password hasing
+Need to store the password in db
+ 
+Da tabase
+SQL lite
+MySQL
+Mongodb
+Postgres
+ 
+User table
+ 
+Column
+Userid
+Username
+Password
+Email
+ 
+Gogle API for login
+ 
+Dashboard page
+file upload
+Pdf, image, scanned copied
+
+
+Backend
+API
+JWT
+ 
+Password hasing
+ 
+
+PPT
+DOCUMENTATION
+ASSIGNMENT 1
+CODE25%

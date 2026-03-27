@@ -1,0 +1,93 @@
+DAY 11 – AI MODELS
+
+AI Models:
+AI models are programs that are trained and pre-trained for specific tasks or use cases.
+
+Examples:
+Chatbot
+Image generation
+Video generation
+Prediction systems
+
+
+--------------------------------------------------
+
+Platforms / Companies Providing AI Models:
+
+Google – Gemini
+OpenAI – GPT models
+Groq – LLM models
+Microsoft – Copilot
+Microsoft Azure – Azure OpenAI Service
+
+
+--------------------------------------------------
+
+Production Ready or Not:
+
+Some AI models are used for testing and learning.
+Some models are production-ready and used in real-world applications like chatbots, automation, and analytics.
+
+
+--------------------------------------------------
+
+LLM (Large Language Model):
+
+LLM is trained on large amounts of text data.
+It understands and generates human-like language.
+
+NLP:
+NLP (Natural Language Processing) is mainly used for text-related tasks like text classification.
+LLM is more advanced and can handle multiple types of data (text, image, etc.) depending on the model.
+
+
+--------------------------------------------------
+
+AI Platforms:
+
+Google AI Studio
+OpenAI Platform
+Groq Platform
+
+These platforms allow developers to use AI models through APIs.
+
+
+--------------------------------------------------
+
+Rate and Token Limit:
+
+Rate – How many requests you can send in a given time.
+Token Limit – Maximum number of words/characters the model can process in one request.
+
+More tokens = longer input and output.
+
+
+--------------------------------------------------
+
+Chat Completion Model Example:
+
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=messages,
+    temperature=0.7,
+    max_tokens=500
+)
+
+
+--------------------------------------------------
+
+Temperature:
+
+Range: 0.0 to 1.0
+
+Low temperature (0.0 – 0.3):
+More accurate and less creative output.
+
+Medium temperature (0.5 – 0.7):
+Balanced creativity and accuracy.
+
+High temperature (0.8 – 1.0):
+More creative and random responses.
+
+
+END OF DAY 11 NOTES

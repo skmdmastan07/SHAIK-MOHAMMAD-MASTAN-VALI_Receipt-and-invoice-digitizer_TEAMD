@@ -1,0 +1,410 @@
+DAY_10_python functions 
+------------------------------------------------------------
+DAY 10 — PYTHON FUNCTIONS & OOP CONCEPTS
+------------------------------------------------------------
+
+------------------------------------------------------------
+1) CLASS AND OBJECT
+------------------------------------------------------------
+
+Class:
+A class is a blueprint used to create objects.
+
+Example:
+
+class Student:
+    def __init__(self, name):
+        self.name = name
+
+Object:
+An object is an instance of a class.
+
+Example:
+
+s1 = Student("Mastan")
+
+
+------------------------------------------------------------
+2) BUILT-IN OBJECT FUNCTIONS
+------------------------------------------------------------
+
+------------------------------------------------------------
+getattr()
+------------------------------------------------------------
+Used to get the value of an attribute.
+
+Syntax:
+getattr(object, "attribute_name")
+
+Example:
+print(getattr(s1, "name"))
+
+
+------------------------------------------------------------
+setattr()
+------------------------------------------------------------
+Used to set or modify the value of an attribute.
+
+Syntax:
+setattr(object, "attribute_name", value)
+
+Example:
+setattr(s1, "name", "Ravi")
+
+
+------------------------------------------------------------
+hasattr()
+------------------------------------------------------------
+Used to check whether an attribute exists or not.
+
+Syntax:
+hasattr(object, "attribute_name")
+
+Returns True or False.
+
+
+------------------------------------------------------------
+delattr()
+------------------------------------------------------------
+Used to delete an attribute from an object.
+
+Syntax:
+delattr(object, "attribute_name")
+
+
+------------------------------------------------------------
+isinstance()
+------------------------------------------------------------
+Used to check whether an object belongs to a specific class.
+
+Syntax:
+isinstance(object, ClassName)
+
+Example:
+isinstance(s1, Student)
+
+
+------------------------------------------------------------
+issubclass()
+------------------------------------------------------------
+Used to check whether one class is a subclass of another.
+
+Syntax:
+issubclass(ChildClass, ParentClass)
+
+
+------------------------------------------------------------
+3) MISCELLANEOUS FUNCTIONS
+------------------------------------------------------------
+
+------------------------------------------------------------
+globals()
+------------------------------------------------------------
+Returns all global variables as a dictionary.
+
+Example:
+print(globals())
+
+
+------------------------------------------------------------
+locals()
+------------------------------------------------------------
+Returns local variables inside a function as a dictionary.
+
+Example:
+print(locals())
+
+
+------------------------------------------------------------
+callable()
+------------------------------------------------------------
+Checks whether an object can be called like a function.
+
+Example:
+callable(print)
+
+
+------------------------------------------------------------
+eval()
+------------------------------------------------------------
+Used to evaluate a string as a Python expression.
+
+Example:
+x = eval("5 + 3")
+print(x)
+
+
+------------------------------------------------------------
+exec()
+------------------------------------------------------------
+Used to execute Python code written inside a string.
+
+Example:
+exec("print('Hello')")
+
+
+------------------------------------------------------------
+4) EXCEPTION HANDLING
+------------------------------------------------------------
+
+try:
+Used to write code that may cause an error.
+
+except:
+Used to handle the error.
+
+finally:
+Always executes, whether error occurs or not.
+
+Example:
+
+try:
+    x = 5 / 0
+except ZeroDivisionError:
+    print("Cannot divide by zero")
+finally:
+    print("Done")
+
+
+------------------------------------------------------------
+5) MEMORY MANAGEMENT
+------------------------------------------------------------
+
+------------------------------------------------------------
+del
+------------------------------------------------------------
+Used to delete a variable.
+
+Example:
+del x
+
+
+------------------------------------------------------------
+gc (Garbage Collection)
+------------------------------------------------------------
+Python automatically removes unused objects.
+
+To manually trigger garbage collection:
+
+import gc
+gc.collect()
+
+
+------------------------------------------------------------
+ASSIGNMENT - 3 IMPORTANT TOPICS
+------------------------------------------------------------
+
+Topics to focus:
+- enumerate()
+- isinstance()
+- gc library
+
+
+------------------------------------------------------------
+enumerate() SIMPLE EXAMPLE
+------------------------------------------------------------
+
+names = ["Mastan", "Ravi", "Anil"]
+
+for index, value in enumerate(names):
+    print(index, value)
+
+
+------------------------------------------------------------
+What is enumerate() ?
+------------------------------------------------------------
+
+enumerate() is used to get both index and value while looping through a list.
+
+Normally:
+for name in names:
+    print(name)
+
+But with enumerate:
+for index, value in enumerate(names):
+    print(index, value)
+
+It automatically gives index along with value.
+
+
+------------------------------------------------------------
+Simple isinstance() Example
+------------------------------------------------------------
+
+x = 10
+print(isinstance(x, int))
+print(isinstance(x, str))
+
+
+------------------------------------------------------------
+Simple gc Example
+------------------------------------------------------------
+
+import gc
+
+a = [1, 2, 3]
+del a
+
+gc.collect()
+
+print("Garbage collection done")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------
+                                 ASSIGNMENT - 3
+------------------------------------------------------------
+
+Topics to Cover:
+1) enumerate()
+2) isinstance()
+3) gc (Garbage Collection) library
+4) Simple code for enumerate
+
+
+------------------------------------------------------------
+1) enumerate()
+------------------------------------------------------------
+
+Definition:
+enumerate() is used to get both index and value while looping through a list.
+
+Syntax:
+enumerate(iterable)
+
+It returns:
+(index, value)
+
+
+------------------------------------------------------------
+Simple Example of enumerate()
+------------------------------------------------------------
+
+names = ["Mastan", "Ravi", "Anil"]
+
+for index, value in enumerate(names):
+    print(index, value)
+
+
+Output:
+0 Mastan
+1 Ravi
+2 Anil
+
+
+------------------------------------------------------------
+enumerate() with start value
+------------------------------------------------------------
+
+names = ["Mastan", "Ravi", "Anil"]
+
+for index, value in enumerate(names, start=1):
+    print(index, value)
+
+
+Output:
+1 Mastan
+2 Ravi
+3 Anil
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------
+2) isinstance()
+------------------------------------------------------------
+
+Definition:
+isinstance() is used to check whether an object belongs to a particular class or data type.
+
+Syntax:
+isinstance(object, datatype)
+
+
+
+------------------------------------------------------------
+Simple Example of isinstance()
+------------------------------------------------------------
+
+x = 10
+print(isinstance(x, int))   # True
+print(isinstance(x, str))   # False
+
+y = "Hello"
+print(isinstance(y, str))   # True
+
+
+
+
+
+
+
+------------------------------------------------------------
+3) gc (Garbage Collection) Library
+------------------------------------------------------------
+
+Definition:
+gc stands for Garbage Collection.
+It helps remove unused objects from memory.
+
+Python automatically performs garbage collection,
+but we can manually trigger it using gc.collect().
+
+
+------------------------------------------------------------
+Simple Example using gc library
+------------------------------------------------------------
+
+import gc
+
+a = [1, 2, 3]
+print("Object created")
+
+del a
+print("Object deleted")
+
+gc.collect()
+print("Garbage collection executed")
+
+
+
+
+
+
+------------------------------------------------------------
+Combined Example (enumerate + isinstance + gc)
+------------------------------------------------------------
+
+import gc
+
+numbers = [10, 20, 30]
+
+for index, value in enumerate(numbers):
+    print("Index:", index, "Value:", value)
+
+x = 100
+print("Is x an integer?", isinstance(x, int))
+
+del numbers
+gc.collect()
+
+print("Program completed")
+
+

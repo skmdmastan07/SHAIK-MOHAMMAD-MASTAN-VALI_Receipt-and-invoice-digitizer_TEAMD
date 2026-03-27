@@ -1,0 +1,96 @@
+DAY-3 
+TOPIC : GIT AND GIT COMMANDS 
+
+
+GIT COMMANDS
+1)git add .
+Adds all changed files to staging area
+
+
+
+2) git add app.py
+Adds only app.py file to staging area
+
+
+
+3) git clone https
+Downloads a project from GitHub to our system
+
+
+
+4) git pull
+Gets latest changes from GitHub and updates local project
+
+
+
+
+5) git fetch --all
+Downloads all updates from remote but does not merge
+
+
+
+
+6) git branch
+Shows only local branches
+
+
+
+7) git checkout branchname
+Switches to another branch
+
+
+
+8) git checkout -b newbranchname
+Creates a new branch and switches to it
+
+
+
+
+9) app.py – file names
+
+
+10) Python -m venv mastan
+Creates a virtual environment named mastan
+
+
+
+11) mastan/scripts/activate
+Activates the virtual environment 
+
+
+
+12) pip install -r requirements.txt
+Installs all required packages from requirements file
+
+
+
+13) python app.py
+Runs the python application 
+
+
+
+14) deactivate
+Stops the virtual environment
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------=====
+
+
+problem statement 
+
+create an website
+
+login page 
+
+also use google login 
+
+add a scan slot 
+-	And a doc scanner 
+-	It should scan and extract the text
+-	And we need to create an invoice generator 
+
+
+
+
+
+
+
