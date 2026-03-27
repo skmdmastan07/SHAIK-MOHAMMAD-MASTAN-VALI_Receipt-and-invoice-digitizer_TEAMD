@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - Receipt & Invoice Digitizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/i18next@23/dist/umd/i18next.min.js"></script>
+    <script>
+    const savedTheme = localStorage.getItem("theme");
+    if(savedTheme === "dark"){
+      document.addEventListener("DOMContentLoaded", () => {
+        document.body.classList.add("dark");
+      });
+    }
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* THEME VARIABLES */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #ffffff 0%, #ffe7f1 100%);
+            --card-bg: rgba(255,255,255,0.95);
+            --text-main: #2d2d2d;
+            --text-sub: #4a4a4a;
+        }
+
+        body.dark {
+            --bg-gradient: linear-gradient(180deg, #1a1a1a 0%, #080808 50%, #000000 100%);
+            --card-bg: #1f1f1f;
+            --text-main: #ffffff;
+            --text-sub: #cfcfcf;
+        }
+
+        body {
+            font-family: 'DM Sans', system-ui, sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            margin-bottom: 50px;
+            color: var(--text-main);
+            transition: color 0.3s;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 32px;
+            margin-top: 28px;
+            width: 100%;
+        }
+
+        .page-header h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            color: #f22b84;
+            letter-spacing: -2px;
+            margin-bottom: 8px;
+            font-size: 65px;
+            line-height: 1.1;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: var(--text-sub);
+            font-weight: 500;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 460px;
+        }
+
+        .card {
+            position: relative;
+            background-color: var(--card-bg);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(219, 39, 119, .15);
+            border: 1px solid rgba(219, 39, 119, .1);
+            overflow: hidden;
+        }
+
+        .card * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('/static/back_drop/leaf.png');
+            background-repeat: repeat;
+            background-size: 250px auto;
+            z-index: 0;
+            pointer-events: none;
+            border-radius: 24px;
+        }
+
+        body.dark .card {
+            background-image: linear-gradient(180deg, #1f1f1f 0%, #161616 50%, #151515 100%);
+        }
+
+        body.dark .card::before {
+            mix-blend-mode: screen;
+            opacity: 0.28;
+        }
+
+        /* Header row with theme toggle */
+        .card-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .card-header-row h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #f22b84;
+        }
+
+        .theme-btn {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: white;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .theme-btn img {
+            width: 20px; height: 20px; object-fit: contain;
+        }
+
+        body.dark .theme-btn { background: white; }
+
+        .input-group { margin-bottom: 16px; }
+
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-sub);
+            margin-bottom: 7px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #f3b8cd;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            color: #2d2d2d;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input::placeholder { color: #9ca3af; font-weight: 300; }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #f22b84;
+            background: #fff5f8;
+            box-shadow: 0 0 0 3px rgba(219, 39, 119, .1);
+        }
+
+        /* Dark mode inputs */
+        body.dark .input-group input {
+            background: rgb(239, 236, 236);
+            color: black;
+            border-color: #444;
+        }
+
+        body.dark .input-group input::placeholder { color: black; opacity: 1; }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #ff5ba2 30%, #dc2c78 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(252, 32, 124, 0.683);
+        }
+
+        .btn:active { transform: translateY(0); }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .footer-text a {
+            color: #f22b84;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer-text a:hover { color: #be185d; text-decoration: underline; }
+
+        @media (max-width: 480px) {
+            .page-header h1 { font-size: 48px; }
+            .card { padding: 28px 24px; }
+            .input-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-header">
+    <h1>Receipt & Invoice <br>Digitizer</h1>
+    <p data-i18n="subtitle">AI-powered receipt analysis and storage</p>
+</div>
+
+<div class="auth-container">
+    <div class="card">
+
+        <div class="card-header-row">
+            <h2 data-i18n="register_title">Create account</h2>
+            <button class="theme-btn" id="themeToggle"></button>
+        </div>
+
+        <form id="registerForm">
+            <div class="input-group">
+                <label data-i18n="username_label">Username</label>
+                <input type="text" id="username" data-i18n-placeholder="register_username_placeholder" placeholder="Choose a username" required>
+            </div>
+
+            <div class="input-group">
+                <label data-i18n="email_label">Email</label>
+                <input type="email" id="email" data-i18n-placeholder="email_placeholder" placeholder="you@example.com" required>
+            </div>
+
+            <div class="input-row">
+                <div class="input-group">
+                    <label data-i18n="password_label">Password</label>
+                    <input type="password" id="password" data-i18n-placeholder="register_password_placeholder" placeholder="Create password" required>
+                </div>
+                <div class="input-group">
+                    <label data-i18n="phone_label">Phone</label>
+                    <input type="tel" id="phone" data-i18n-placeholder="phone_placeholder" placeholder="+91 00000 00000">
+                </div>
+            </div>
+
+            <button type="submit" class="btn" data-i18n="register_btn">Create Account</button>
+        </form>
+
+        <p class="footer-text">
+            <span data-i18n="already_account">Already have an account?</span> <a href="/" data-i18n="signin">Sign in</a>
+        </p>
+    </div>
+</div>
+
+<script>
+const themeBtn = document.getElementById("themeToggle");
+
+function updateThemeIcon(isDark) {
+    themeBtn.innerHTML = isDark
+        ? '<img src="/static/back_drop/sun.png" alt="Light mode">'
+        : '<img src="/static/back_drop/moon.png" alt="Dark mode">';
+}
+
+function applyTheme() {
+    const t = localStorage.getItem("theme") || "light";
+    const isDark = t === "dark";
+    isDark ? document.body.classList.add("dark") : document.body.classList.remove("dark");
+    updateThemeIcon(isDark);
+}
+
+applyTheme();
+
+themeBtn.onclick = () => {
+    const isDark = document.body.classList.contains("dark");
+    localStorage.setItem("theme", isDark ? "light" : "dark");
+    applyTheme();
+};
+</script>
+
+<script>
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('username', document.getElementById('username').value);
+    formData.append('email', document.getElementById('email').value);
+    formData.append('password', document.getElementById('password').value);
+    formData.append('phone', document.getElementById('phone').value);
+
+    try {
+        const response = await fetch('/api/register', { method: 'POST', body: formData });
+        const data = await response.json();
+        if (data.success) {
+            alert(data.message);
+            window.location.href = '/';
+        } else {
+            alert(data.message || 'Registration failed');
+        }
+    } catch (error) {
+        alert('An error occurred. Please try again.');
+    }
+});
+</script>
+<script>
+// ── i18n — load saved language ──
+const DEFAULT_LANG = "en";
+const savedLang = localStorage.getItem("app_lang") || DEFAULT_LANG;
+
+i18next.init({ lng: savedLang, fallbackLng: DEFAULT_LANG }, () => loadLanguage(savedLang));
+
+async function loadLanguage(lang) {
+    try {
+        const r = await fetch(`/static/i18n/${lang}.json`);
+        const d = await r.json();
+        i18next.addResourceBundle(lang, "translation", d, true, true);
+        i18next.changeLanguage(lang);
+        document.querySelectorAll("[data-i18n]").forEach(el => {
+            const t = i18next.t(el.dataset.i18n);
+            if (t && t !== el.dataset.i18n) el.innerHTML = t;
+        });
+        document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+            const t = i18next.t(el.dataset.i18nPlaceholder);
+            if (t && t !== el.dataset.i18nPlaceholder) el.placeholder = t;
+        });
+    } catch(e) { /* silent fallback */ }
+}
+</script>
+</body>
+</html>

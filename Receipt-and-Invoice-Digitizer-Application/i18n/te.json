@@ -1,0 +1,143 @@
+{
+  "title": "రసీదు మరియు ఇన్వాయిస్ డిజిటైజర్",
+  "subtitle": "AI-ఆధారిత రసీదు విశ్లేషణ మరియు నిల్వ",
+
+  "welcome": "తిరిగి స్వాగతం",
+
+  "username_label": "వినియోగదారు పేరు లేదా ఇమెయిల్",
+  "username_placeholder": "మీ వినియోగదారు పేరు లేదా ఇమెయిల్ నమోదు చేయండి",
+
+  "password_label": "పాస్‌వర్డ్",
+  "password_placeholder": "మీ పాస్‌వర్డ్ నమోదు చేయండి",
+
+  "signin": "సైన్ ఇన్ చేయండి",
+  "forgot": "పాస్‌వర్డ్ మర్చిపోయారా?",
+  "create": "ఖాతా సృష్టించండి",
+
+  "or_signin_with": "లేదా దీనితో సైన్ ఇన్ చేయండి",
+
+  "forgot_title": "పాస్‌వర్డ్ మర్చిపోయారా?",
+  "forgot_subtitle": "చింతించకండి — మీ ఇమెయిల్ నమోదు చేయండి, మేము రీసెట్ లింక్ పంపుతాము.",
+  "forgot_btn": "రీసెట్ లింక్ పంపండి",
+  "forgot_success_msg": "మీ ఇన్‌బాక్స్ తనిఖీ చేసి సూచనలను అనుసరించండి.",
+
+  "email_label": "ఇమెయిల్ చిరునామా",
+  "email_placeholder": "you@example.com",
+
+  "send_link": "రీసెట్ లింక్ పంపండి",
+  "sending": "పంపుతున్నాము…",
+
+  "reset_success": "మేము రీసెట్ లింక్ పంపాము",
+  "check_inbox": "మీ ఇన్‌బాక్స్ తనిఖీ చేసి సూచనలను అనుసరించండి.",
+
+  "back_to_login": "← సైన్ ఇన్‌కు తిరిగి వెళ్ళండి",
+  "back_signin": "← సైన్ ఇన్‌కు తిరిగి వెళ్ళండి",
+
+  "register_title": "ఖాతా సృష్టించండి",
+  "create_account": "ఖాతా సృష్టించండి",
+  "create_account_btn": "ఖాతా సృష్టించండి",
+  "register_btn": "ఖాతా సృష్టించండి",
+  "register_username_placeholder": "వినియోగదారు పేరు ఎంచుకోండి",
+  "register_password_placeholder": "పాస్‌వర్డ్ సృష్టించండి",
+
+  "email": "ఇమెయిల్",
+  "password": "పాస్‌వర్డ్",
+  "phone": "ఫోన్",
+  "phone_label": "ఫోన్",
+  "phone_placeholder": "+91 00000 00000",
+
+  "already_account": "ఇప్పటికే ఖాతా ఉందా?",
+  "signin_link": "సైన్ ఇన్ చేయండి",
+
+  "reset_title": "పాస్‌వర్డ్ రీసెట్ చేయండి",
+  "reset_password": "పాస్‌వర్డ్ రీసెట్ చేయండి",
+  "reset_btn": "పాస్‌వర్డ్ రీసెట్ చేయండి",
+
+  "new_password_label": "కొత్త పాస్‌వర్డ్",
+  "new_password_placeholder": "కొత్త పాస్‌వర్డ్ నమోదు చేయండి",
+
+  "confirm_password_label": "పాస్‌వర్డ్ నిర్ధారించండి",
+  "confirm_password_placeholder": "కొత్త పాస్‌వర్డ్ మళ్ళీ నమోదు చేయండి",
+
+  "reset_password_btn": "పాస్‌వర్డ్ రీసెట్ చేయండి",
+  "remember_password": "పాస్‌వర్డ్ గుర్తుందా?",
+
+  "dashboard": "డాష్‌బోర్డ్",
+  "analytics": "విశ్లేషణలు",
+  "logout": "లాగ్ అవుట్",
+  "welcome_user": "స్వాగతం, వినియోగదారు",
+
+  "upload_title": "రసీదు / ఇన్వాయిస్ అప్‌లోడ్ చేయండి",
+  "upload_subtitle": "లాగి వదలండి లేదా ఎంచుకోవడానికి క్లిక్ చేయండి",
+  "select_file": "ఫైల్ ఎంచుకోండి",
+
+  "your_receipts": "మీ రసీదులు",
+
+  "search_vendor": "విక్రేత ద్వారా వెతకండి...",
+  "date": "తేదీ",
+  "vendor": "విక్రేత",
+  "invoice": "ఇన్వాయిస్ #",
+  "amount": "మొత్తం",
+  "tax": "పన్ను",
+  "actions": "చర్యలు",
+
+  "view": "చూడండి",
+  "delete": "తొలగించండి",
+
+  "no_receipts": "ఇంకా రసీదులు అప్‌లోడ్ చేయలేదు. మీ మొదటి రసీదు అప్‌లోడ్ చేయడం ప్రారంభించండి!",
+
+  "upload_success": "రసీదు విజయవంతంగా అప్‌లోడ్ చేయబడింది!",
+  "delete_confirm": "మీరు ఈ రసీదును తొలగించాలనుకుంటున్నారా?",
+  "delete_success": "రసీదు తొలగించబడింది",
+
+  "spending_over_time": "కాలక్రమంలో ఖర్చు",
+  "total_spent": "మొత్తం ఖర్చు",
+  "total_tax": "మొత్తం పన్ను",
+  "receipts": "రసీదులు",
+  "avg_receipt": "సగటు రసీదుకు",
+
+  "bill_digitizer": "బిల్ డిజిటైజర్",
+  "bill_digitizer_subtitle": "డిజిటల్ కాపీ రూపొందించడానికి ఏదైనా రసీదు ఎంచుకోండి",
+  "your_receipts_panel": "▸ మీ రసీదులు — ఒకటి ఎంచుకోండి",
+  "digitized_bill_panel": "▸ డిజిటైజ్డ్ బిల్",
+  "loading_receipts": "రసీదులు లోడ్ అవుతున్నాయి…",
+  "no_receipts_found": "రసీదులు కనుగొనబడలేదు",
+  "upload_from_dashboard": "ముందు డాష్‌బోర్డ్ నుండి బిల్లులు అప్‌లోడ్ చేయండి",
+  "error_loading": "రసీదులు లోడ్ చేయడంలో లోపం",
+  "no_results_found": "ఫలితాలు కనుగొనబడలేదు",
+  "unknown_vendor": "తెలియని విక్రేత",
+  "no_invoice": "ఇన్వాయిస్ లేదు",
+  "select_receipt_prompt": "ఒక రసీదు ఎంచుకోండి",
+  "select_receipt_hint": "డిజిటైజ్ చేయడానికి ఎడమవైపు రసీదుపై క్లిక్ చేయండి",
+  "print_btn": "🖨 ప్రింట్",
+  "view_original_btn": "అసలు చూడండి",
+  "grand_total": "మొత్తం మొత్తం",
+  "thank_you_business": "మీ వ్యాపారానికి ధన్యవాదాలు",
+  "digitized_receipt": "డిజిటైజ్డ్ రసీదు",
+  "description": "వివరణ",
+  "admin_dashboard": "అడ్మిన్ డాష్‌బోర్డ్",
+  "admin_subtitle": "సిస్టమ్ అవలోకనం మరియు విశ్లేషణలు",
+  "total_users": "మొత్తం వినియోగదారులు",
+  "total_uploads": "మొత్తం అప్‌లోడ్‌లు",
+  "total_processed": "మొత్తం ప్రాసెస్ చేసిన ఫైల్‌లు",
+  "system_analytics": "సిస్టమ్ విశ్లేషణ అవలోకనం",
+  "back_to_dashboard": "← వినియోగదారు డాష్‌బోర్డ్‌కు తిరిగి",
+  "today": "ఈరోజు",
+  "this_week": "ఈ వారం",
+  "all_time": "అన్ని సమయం",
+  "uploads_today": "ఈరోజు అప్‌లోడ్‌లు",
+  "uploads_week_label": "ఈ వారం అప్‌లోడ్‌లు",
+  "uploads_trend": "అప్‌లోడ్ ట్రెండ్ (చివరి 7 రోజులు)",
+  "recent_activity": "తాజా అప్‌లోడ్ కార్యకలాపాలు",
+  "users_overview": "వినియోగదారుల అవలోకనం",
+  "user_col": "వినియోగదారు",
+  "username_col": "వినియోగదారు పేరు",
+  "email_col": "ఇమెయిల్",
+  "view_bills": "బిల్లులు చూడండి",
+  "search_user": "వినియోగదారు పేరు ద్వారా వెతకండి...",
+  "user_bills": "వినియోగదారు బిల్లులు",
+  "uploaded_bills": "అప్‌లోడ్ చేసిన బిల్లులు",
+  "open_btn": "తెరవండి",
+  "no_bills": "ఈ వినియోగదారు ఇంకా ఏ బిల్లులు అప్‌లోడ్ చేయలేదు.",
+  "back_to_admin": "← అడ్మిన్‌కు తిరిగి"
+}

@@ -1,0 +1,144 @@
+{
+  "title": "Receipt & Invoice Digitizer",
+  "subtitle": "AI-powered receipt analysis and storage",
+
+  "welcome": "Welcome back",
+
+  "username_label": "Username or Email",
+  "username_placeholder": "Enter your username or email",
+
+  "password_label": "Password",
+  "password_placeholder": "Enter your password",
+
+  "signin": "Sign In",
+  "forgot": "Forgot Password?",
+  "create": "Create an account",
+
+  "or_signin_with": "or sign in with",
+
+  "forgot_title": "Forgot password?",
+  "forgot_subtitle": "No worries — enter your email and we'll send you a reset link.",
+  "forgot_btn": "Send Reset Link",
+  "forgot_success_msg": "Check your inbox and follow the instructions.",
+
+  "email_label": "Email Address",
+  "email_placeholder": "you@example.com",
+
+  "send_link": "Send Reset Link",
+  "sending": "Sending…",
+
+  "reset_success": "We sent a reset link to",
+  "check_inbox": "Check your inbox and follow the instructions.",
+
+  "back_to_login": "← Back to Sign In",
+  "back_signin": "← Back to Sign In",
+
+  "register_title": "Create account",
+  "create_account": "Create account",
+  "create_account_btn": "Create Account",
+  "register_btn": "Create Account",
+  "register_username_placeholder": "Choose a username",
+  "register_password_placeholder": "Create password",
+
+  "email": "Email",
+  "email_label": "Email",
+  "password": "Password",
+  "phone": "Phone",
+  "phone_label": "Phone",
+  "phone_placeholder": "+91 00000 00000",
+
+  "already_account": "Already have an account?",
+  "signin_link": "Sign in",
+
+  "reset_title": "Reset Password",
+  "reset_password": "Reset Password",
+  "reset_btn": "Reset Password",
+
+  "new_password_label": "New Password",
+  "new_password_placeholder": "Enter new password",
+
+  "confirm_password_label": "Confirm Password",
+  "confirm_password_placeholder": "Confirm new password",
+
+  "reset_password_btn": "Reset Password",
+  "remember_password": "Remember your password?",
+
+  "dashboard": "Dashboard",
+  "analytics": "Analytics",
+  "logout": "Logout",
+  "welcome_user": "Welcome, User",
+
+  "upload_title": "Upload Receipt / Invoice",
+  "upload_subtitle": "Drag & drop or click to select",
+  "select_file": "Select File",
+
+  "your_receipts": "Your Receipts",
+
+  "search_vendor": "Search by vendor...",
+  "date": "Date",
+  "vendor": "Vendor",
+  "invoice": "Invoice #",
+  "amount": "Amount",
+  "tax": "Tax",
+  "actions": "Actions",
+
+  "view": "View",
+  "delete": "Delete",
+
+  "no_receipts": "No receipts uploaded yet. Start by uploading your first receipt!",
+
+  "upload_success": "Receipt uploaded successfully!",
+  "delete_confirm": "Are you sure you want to delete this receipt?",
+  "delete_success": "Receipt deleted",
+
+  "spending_over_time": "Spending Over Time",
+  "total_spent": "Total Spent",
+  "total_tax": "Total Tax",
+  "receipts": "Receipts",
+  "avg_receipt": "Avg per Receipt",
+
+  "bill_digitizer": "Bill Digitizer",
+  "bill_digitizer_subtitle": "Select any uploaded receipt to generate its clean digital copy",
+  "your_receipts_panel": "▸ Your Receipts — select one to digitize",
+  "digitized_bill_panel": "▸ Digitized Bill",
+  "loading_receipts": "LOADING RECEIPTS…",
+  "no_receipts_found": "NO RECEIPTS FOUND",
+  "upload_from_dashboard": "Upload bills from the Dashboard first",
+  "error_loading": "ERROR LOADING RECEIPTS",
+  "no_results_found": "NO RESULTS FOUND",
+  "unknown_vendor": "Unknown Vendor",
+  "no_invoice": "No invoice #",
+  "select_receipt_prompt": "SELECT A RECEIPT",
+  "select_receipt_hint": "Click any receipt on the left to digitize it",
+  "print_btn": "🖨 Print",
+  "view_original_btn": "View Original",
+  "grand_total": "GRAND TOTAL",
+  "thank_you_business": "THANK YOU FOR YOUR BUSINESS",
+  "digitized_receipt": "DIGITIZED RECEIPT",
+  "description": "DESCRIPTION",
+  "admin_dashboard": "Admin Dashboard",
+  "admin_subtitle": "System overview and analytics",
+  "total_users": "Total Users",
+  "total_uploads": "Total Uploads",
+  "total_processed": "Total Processed Files",
+  "system_analytics": "System Analytics Overview",
+  "back_to_dashboard": "← Back to User Dashboard",
+  "today": "Today",
+  "this_week": "This Week",
+  "all_time": "All Time",
+  "uploads_today": "Uploads Today",
+  "uploads_week_label": "Uploads This Week",
+  "uploads_trend": "Uploads Trend (Last 7 Days)",
+  "recent_activity": "Recent Upload Activity",
+  "users_overview": "Users Overview",
+  "user_col": "User",
+  "username_col": "Username",
+  "email_col": "Email",
+  "view_bills": "View Bills",
+  "search_user": "Search user by username...",
+  "user_bills": "User Bills",
+  "uploaded_bills": "Uploaded Bills",
+  "open_btn": "Open",
+  "no_bills": "No bills uploaded by this user yet.",
+  "back_to_admin": "← Back to Admin"
+}

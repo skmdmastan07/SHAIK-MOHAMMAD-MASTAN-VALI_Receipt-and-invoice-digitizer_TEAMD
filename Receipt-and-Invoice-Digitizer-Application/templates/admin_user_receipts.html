@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Bills - Admin</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/i18next@23/dist/umd/i18next.min.js"></script>
+
+<style>
+:root {
+    --card-bg: rgba(255,255,255,0.95);
+    --card-border: rgba(219,39,119,0.1);
+    --card-shadow: 0 20px 60px rgba(219,39,119,0.15);
+    --text-main: #2d2d2d;
+    --text-sub: #555;
+    --row-hover: #fff5f8;
+    --border-color: #eee;
+    --search-bg: white;
+    --search-color: #2d2d2d;
+}
+[data-theme="dark"] {
+    --card-bg: #1a1a1a;
+    --card-border: rgba(255,255,255,0.08);
+    --card-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    --text-main: #ffffff;
+    --text-sub: #9ca3af;
+    --row-hover: rgba(242,43,132,0.07);
+    --border-color: rgba(255,255,255,0.08);
+    --search-bg: #1a1a1a;
+    --search-color: #e5e7eb;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; min-width: 0; }
+
+/* ── Cross-platform scrollbar ── */
+* { scrollbar-width: none; }
+::-webkit-scrollbar { display: none; }
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background-image: url('/static/back_drop/leaf.png'), linear-gradient(135deg, #ffffff 0%, #ffe7f1 100%);
+    background-repeat: repeat, no-repeat;
+    background-size: 250px auto, cover;
+    min-height: 100vh;
+    color: var(--text-main);
+    transition: color 0.3s;
+}
+
+[data-theme="dark"] body {
+    background-color: #0c0008;
+    background-image: linear-gradient(180deg, #1a1a1a 0%, #121212 50%, #0a0a0a 100%);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+[data-theme="dark"] body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url('/static/back_drop/leaf.png');
+    background-repeat: repeat;
+    background-size: 250px auto;
+    mix-blend-mode: screen;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ── Navbar ── */
+.navbar {
+    position: sticky; top: 0; z-index: 1000;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 40px;
+    background: linear-gradient(135deg, #ff5ba2 0%, #dc2c78 100%);
+    border-bottom: 1px solid rgba(219,39,119,0.15);
+}
+.nav-left, .nav-right { display: flex; gap: 24px; align-items: center; }
+.nav-item {
+    text-decoration: none; color: #ffffff; font-weight: 600;
+    padding: 8px 20px; border-radius: 10px; transition: 0.3s;
+    font-size: 14px; font-family: 'Space Grotesk', sans-serif;
+    cursor: pointer; background: none; border: none;
+}
+.nav-item:hover { background: #ff6daae4; }
+.nav-item.active { background: linear-gradient(135deg, #ffffff 30%, #ffe7f1 100%); color: #f22b84; }
+#themeToggle img { width: 22px; height: 22px; object-fit: contain; display: block; }
+
+/* ── Layout ── */
+.container {
+    max-width: 1100px; margin: auto;
+    padding: 50px 20px; position: relative; z-index: 1;
+}
+
+/* ── Page header ── */
+.page-header { text-align: center; padding: 40px 0 36px; }
+.page-header h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 700; color: #f22b84;
+    letter-spacing: -2px; line-height: 1.1; margin-bottom: 10px;
+}
+.page-header p { font-size: 16px; font-weight: 500; color: var(--text-sub); }
+
+/* ── Table card ── */
+.table-card {
+    background: var(--card-bg);
+    border-radius: 20px; padding: 36px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--card-border);
+    transition: background 0.3s;
+}
+
+/* ── Search ── */
+.search-box {
+    width: 100%; padding: 12px 16px; margin-bottom: 24px;
+    border: 1.5px solid var(--card-border); border-radius: 10px;
+    font-size: 14px; font-family: 'DM Sans', sans-serif;
+    background: var(--search-bg); color: var(--search-color);
+    box-sizing: border-box; transition: all 0.3s;
+}
+.search-box:focus { outline: none; border-color: #f22b84; box-shadow: 0 0 0 3px rgba(219,39,119,0.1); }
+.search-box::placeholder { color: var(--text-sub); }
+
+/* ── Table ── */
+table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+
+thead { background: linear-gradient(135deg, #ff5ba2 0%, #dc2c78 100%); }
+thead tr:hover { background: linear-gradient(135deg, #ff5ba2 0%, #dc2c78 100%); }
+
+th {
+    padding: 14px 16px; text-align: left; font-weight: 600;
+    color: white; font-family: 'Space Grotesk', sans-serif; font-size: 13px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+th:first-child { border-radius: 10px 0 0 10px; }
+th:last-child  { border-radius: 0 10px 10px 0; }
+
+td { padding: 15px 16px; border-bottom: 1px solid var(--border-color); color: var(--text-main); font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+tbody tr:hover { background: var(--row-hover); }
+tbody tr:last-child td { border-bottom: none; }
+
+.vendor-cell { max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.amount-cell { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: #f22b84; }
+
+/* ── View button ── */
+.view-btn {
+    background: linear-gradient(135deg, #ff5ba2 30%, #dc2c78 100%);
+    color: white; padding: 7px 16px; border-radius: 8px;
+    text-decoration: none; font-size: 13px; font-weight: 600;
+    font-family: 'DM Sans', sans-serif; transition: all 0.3s; display: inline-block;
+}
+.view-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(219,39,119,0.35); }
+
+/* ── Empty state ── */
+.empty-state {
+    text-align: center; padding: 60px 20px;
+    color: var(--text-sub); font-size: 15px;
+}
+.empty-state span { font-size: 40px; display: block; margin-bottom: 12px; }
+
+/* ── Back button ── */
+.back-wrapper { margin-top: 32px; }
+.back-btn {
+    display: inline-block; text-decoration: none;
+    background: linear-gradient(135deg, #ff5ba2 30%, #dc2c78 100%);
+    color: white; padding: 13px 28px; border-radius: 10px;
+    font-weight: 600; font-family: 'DM Sans', sans-serif; transition: 0.3s;
+}
+.back-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(219,39,119,0.4); }
+
+@media (max-width: 768px) {
+    .navbar { flex-direction: column; gap: 12px; padding: 12px 20px; }
+    .table-card { padding: 20px; }
+    .page-header h1 { font-size: 32px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<header class="navbar">
+    <div class="nav-left">
+        <a href="{{ url_for('dashboard') }}" class="nav-item" data-i18n="dashboard">← Dashboard</a>
+        <a href="/admin" class="nav-item" data-i18n="admin_dashboard">Admin Dashboard</a>
+        <span class="nav-item active" data-i18n="user_bills">User Bills</span>
+    </div>
+    <div class="nav-right">
+        <span class="nav-item" id="welcomeUser" data-username="{{ session.get('username') }}">Welcome, {{ session.get('username') }}</span>
+        <button class="nav-item" id="themeToggle"></button>
+        <button class="nav-item" id="logoutBtn" data-i18n="logout">Logout</button>
+    </div>
+</header>
+
+<div class="container">
+
+    <!-- Page header -->
+    <div class="page-header">
+        <h1>{{ user[0] }}'s <span data-i18n="uploaded_bills">Uploaded Bills</span></h1>
+        <p>{{ user[1] }}</p>
+    </div>
+
+    <div class="table-card">
+
+        <input class="search-box" id="searchBox" data-i18n-placeholder="search_vendor" placeholder="Search by vendor or invoice…">
+
+        {% if user_receipts %}
+        <table>
+            <colgroup>
+                <col style="width:35%"> <!-- Vendor -->
+                <col style="width:20%"> <!-- Invoice ID -->
+                <col style="width:15%"> <!-- Amount -->
+                <col style="width:15%"> <!-- Date -->
+                <col style="width:15%"> <!-- View File -->
+            </colgroup>
+            <thead>
+                <tr>
+                    <th data-i18n="vendor">Vendor</th>
+                    <th data-i18n="invoice">Invoice ID</th>
+                    <th data-i18n="amount">Amount</th>
+                    <th data-i18n="date">Date</th>
+                    <th data-i18n="view">View File</th>
+                </tr>
+            </thead>
+            <tbody id="billsTableBody">
+                {% for bill in user_receipts %}
+                <tr>
+                    <td class="vendor-cell">{{ bill[0] or '—' }}</td>
+                    <td>{{ bill[1] or '—' }}</td>
+                    <td class="amount-cell">₹ {{ bill[2] or 0 }}</td>
+                    <td>{{ bill[3].split(' ')[0] if bill[3] else '—' }}</td>
+                    <td>
+                        <a class="view-btn" href="/uploads/{{ bill[4] }}" target="_blank" data-i18n="open_btn">Open</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <span>🧾</span>
+            <p data-i18n="no_bills">No bills uploaded by this user yet.</p>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <div class="back-wrapper">
+        <a href="/admin" class="back-btn" data-i18n="back_to_admin">← Back to Admin</a>
+    </div>
+
+</div>
+
+<script>
+// ── Theme ──
+const themeToggle = document.getElementById('themeToggle');
+const savedTheme  = localStorage.getItem('theme') || 'light';
+document.documentElement.setAttribute('data-theme', savedTheme);
+
+function updateThemeIcon(theme) {
+    themeToggle.innerHTML = theme === 'dark'
+        ? '<img src="/static/back_drop/sun.png" alt="Light mode">'
+        : '<img src="/static/back_drop/moon.png" alt="Dark mode">';
+}
+updateThemeIcon(savedTheme);
+
+themeToggle.onclick = () => {
+    const current  = document.documentElement.getAttribute('data-theme');
+    const newTheme = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+};
+
+document.getElementById('logoutBtn').onclick = async () => {
+    await fetch('/api/logout', { method: 'POST' });
+    window.location = '/';
+};
+</script>
+
+<script>
+// ── i18n ──
+const DEFAULT_LANG = "en";
+const savedLang = localStorage.getItem("app_lang") || DEFAULT_LANG;
+
+i18next.init({ lng: savedLang, fallbackLng: DEFAULT_LANG }, async () => {
+    try {
+        const r = await fetch(`/static/i18n/${savedLang}.json`);
+        const d = await r.json();
+        i18next.addResourceBundle(savedLang, "translation", d, true, true);
+        i18next.changeLanguage(savedLang);
+
+        document.querySelectorAll("[data-i18n]").forEach(el => {
+            const t = i18next.t(el.dataset.i18n);
+            if (t && t !== el.dataset.i18n) el.innerHTML = t;
+        });
+        document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+            const t = i18next.t(el.dataset.i18nPlaceholder);
+            if (t && t !== el.dataset.i18nPlaceholder) el.placeholder = t;
+        });
+
+        // Welcome username — use data-username directly to avoid i18n overwrite
+        const welcomeEl = document.getElementById('welcomeUser');
+        if (welcomeEl) {
+            const username = welcomeEl.dataset.username;
+            if (username) welcomeEl.textContent = 'Welcome, ' + username;
+        }
+    } catch(e) { /* silent fallback */ }
+});
+
+// ── Search ──
+document.getElementById('searchBox')?.addEventListener('keyup', function() {
+    const q = this.value.toLowerCase();
+    document.querySelectorAll('#billsTableBody tr').forEach(row => {
+        const vendor  = row.cells[0]?.textContent.toLowerCase() || '';
+        const invoice = row.cells[1]?.textContent.toLowerCase() || '';
+        row.style.display = (vendor.includes(q) || invoice.includes(q)) ? '' : 'none';
+    });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Receipt & Invoice Digitizer — Go Paperless</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; min-width: 0; }
+
+/* ── Cross-platform scrollbar ── */
+* { scrollbar-width: none; }
+::-webkit-scrollbar { display: none; }
+
+:root {
+    --pink: #f22b84;
+    --pink-mid: #dc2c78;
+    --pink-light: #ff5ba2;
+    --pink-pale: #fff5f8;
+    --pink-border: rgba(219,39,119,0.15);
+    --text-main: #1f2937;
+    --text-sub: #4a4a4a;
+    --card-bg: rgba(255,255,255,0.95);
+    --bg-gradient: linear-gradient(135deg, #ffffff 0%, #fbedf3 100%);
+    --step-icon-bg: linear-gradient(135deg, #fff5f8, #ffe8f0);
+    --pill-bg: white;
+}
+
+[data-theme="dark"] {
+    --text-main: #ffffff;
+    --text-sub: #9ca3af;
+    --card-bg: #121212;
+    --pink-border: rgba(255,255,255,0.08);
+    --pink-pale: #1f1020;
+    --step-icon-bg: linear-gradient(135deg, #2a1020, #1f0a18);
+    --pill-bg: #1f1f1f;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: var(--bg-gradient);
+    background-image: url('/static/back_drop/leaf.png'), var(--bg-gradient);
+    background-repeat: repeat, no-repeat;
+    background-size: 250px auto, cover;
+    color: var(--text-main);
+    transition: color 0.3s;
+}
+
+[data-theme="dark"] body {
+    background-color: #0c0008;
+    background-image: linear-gradient(180deg, #1a1a1a 0%, #121212 50%, #0a0a0a 100%);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+[data-theme="dark"] body::before {
+    content: "";
+    position: fixed; inset: 0;
+    background-image: url('/static/back_drop/leaf.png');
+    background-repeat: repeat; background-size: 250px auto;
+    mix-blend-mode: screen; opacity: 0.3;
+    pointer-events: none; z-index: -1;
+}
+
+/* ── VIDEO INTRO SCREEN ── */
+#intro-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #0a0005;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+#intro-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+#intro-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+
+/* Bottom-right controls row */
+.intro-controls {
+    position: absolute;
+    bottom: 32px;
+    right: 36px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 20;
+}
+.skip-btn {
+    background:linear-gradient(
+    135deg,
+    rgba(255, 123, 174, 0.421) 30%,
+    rgba(255, 123, 174, 0.199) 60%,
+    rgba(255, 123, 174, 0.102) 80%
+    );
+    border: 0.1px solid rgba(255, 123, 174, 0.102);
+    backdrop-filter: blur(8px);
+   -webkit-backdrop-filter: blur(8px);
+    color: #ffffffe3;
+    box-shadow: 0 4px 16px rgba(31, 3, 14, 0.2); 
+    padding: 9px 22px;
+    border-radius: 30px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+    letter-spacing: 0.3px;
+    text-shadow: 0 1px 3px rgba(77, 32, 54, 0.2);
+}
+.skip-btn:hover { color: #c75895e3;}
+
+#mute-toggle {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 123, 174, 0.421) 30%,
+        rgba(255, 123, 174, 0.199) 60%,
+        rgba(255, 123, 174, 0.102) 80%
+    );
+    border: 0.1px solid rgba(255, 123, 174, 0.102);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 4px 16px rgba(31, 3, 14, 0.2);
+    width: 36px; height: 36px;
+    border-radius: 30px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#mute-toggle svg { 
+    width: 16px; height: 16px; 
+    fill: rgba(255, 123, 174, 0.8);  /* match the pink tone */
+    transition: fill 0.2s, stroke 0.2s;
+    filter: drop-shadow(0 1px 2px rgba(77, 32, 54, 0.2)); 
+}
+
+#mute-toggle:hover svg path { 
+    fill: #c75895e3; 
+    stroke: #c75895e3; 
+}
+
+
+/* Video progress bar */
+.video-progress {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: rgba(255,255,255,0.15);
+    z-index: 15;
+}
+.video-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff5ba2, #f22b84);
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+/* ── LANDING PAGE ── */
+#landing-page {
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+#landing-page.visible { opacity: 1; }
+
+/* ── NAVBAR ── */
+.navbar {
+    position: sticky; top: 0; z-index: 1000;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 40px;
+    background: linear-gradient(135deg, #ff5ba2 0%, #dc2c78 100%);
+    border-bottom: 1px solid var(--pink-border);
+}
+.nav-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px; font-weight: 700;
+    color: #fff; letter-spacing: -0.5px;
+    text-decoration: none;
+}
+.nav-logo span { opacity: 0.75; font-weight: 500; }
+.nav-links { display: flex; gap: 8px; align-items: center; }
+.nav-link {
+    text-decoration: none; color: #fff; font-weight: 600;
+    padding: 8px 20px; border-radius: 10px; transition: 0.3s;
+    font-size: 14px; font-family: 'Space Grotesk', sans-serif;
+}
+.nav-link:hover { background: rgba(255,255,255,0.15); }
+.nav-cta {
+    background: linear-gradient(135deg, #fff 30%, #ffe7f1 100%);
+    color: #f22b84 !important;
+    padding: 9px 22px !important;
+    border-radius: 10px;
+    font-weight: 700 !important;
+    text-decoration: none;
+    font-size: 14px;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.3s;
+    display: inline-block;
+}
+.nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,0.15); }
+
+/* ── HERO ── */
+.hero {
+    min-height: 92vh;
+    display: flex; align-items: center;
+    padding: 80px 40px 60px;
+    max-width: 1170px;
+    margin: 0 auto;
+    gap: 60px;
+}
+.hero-left { flex: 1; min-width: 0; overflow-wrap: break-word; word-break: break-word; }
+.hero-eyebrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px; letter-spacing: 3px;
+    color: #c084a0; text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
+}
+.hero-eyebrow::before {
+    content: '';
+    display: block; width: 28px; height: 1.5px;
+    background: linear-gradient(90deg, #ff5ba2, #f22b84);
+}
+.hero-h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(48px, 7vw, 82px);
+    font-weight: 700;
+    color: var(--pink);
+    letter-spacing: -3px;
+    line-height: 0.95;
+    margin-bottom: 24px;
+}
+.hero-h1 .word-line { display: block; overflow: hidden; }
+.hero-h1 .word-inner {
+    display: block;
+    transform: translateY(100%);
+    animation: slideUp 0.7s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+.hero-h1 .word-inner:nth-child(1) { animation-delay: 0.1s; }
+.word-line:nth-child(2) .word-inner { animation-delay: 0.22s; }
+.word-line:nth-child(3) .word-inner { animation-delay: 0.34s; }
+@keyframes slideUp {
+    to { transform: translateY(0); }
+}
+
+.hero-sub {
+    font-size: 17px; color: var(--text-sub);
+    font-weight: 500; line-height: 1.7;
+    max-width: 480px;
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.55s forwards;
+}
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-actions {
+    display: flex; gap: 14px; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.7s forwards;
+}
+.btn-primary {
+    background: linear-gradient(135deg, #ff5ba2 30%, #dc2c78 100%);
+    color: white; border: none; padding: 15px 36px; border-radius: 12px;
+    cursor: pointer; font-weight: 700; font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px; transition: all 0.3s ease; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    box-shadow: 0 6px 24px rgba(242,43,132,0.3);
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(242,43,132,0.4); }
+.btn-secondary {
+    background: transparent;
+    color: var(--pink); border: 2px solid rgba(242,43,132,0.3);
+    padding: 13px 30px; border-radius: 12px;
+    cursor: pointer; font-weight: 600; font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px; transition: all 0.3s ease; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-secondary:hover { border-color: var(--pink); background: var(--pink-pale); transform: translateY(-2px); }
+
+.hero-stats {
+    display: flex; gap: 32px; margin-top: 52px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.9s forwards;
+}
+.hero-stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px; font-weight: 700; color: var(--pink); line-height: 1;
+}
+.hero-stat-label {
+    font-size: 12px; color: #9ca3af; font-weight: 500;
+    margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.hero-stat-divider { width: 1px; background: var(--pink-border); align-self: stretch; }
+
+/* ── HERO RIGHT — Floating receipt mockup ── */
+.hero-right {
+    flex: 1; min-width: 0;
+    display: flex; justify-content: center; align-items: center;
+    position: relative;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+    padding: 20px 60px 20px 60px;
+    overflow: visible;
+}
+.receipt-mockup-wrap {
+    position: relative;
+    width: 320px;
+    overflow: visible;
+}
+.receipt-mockup-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -40px;
+    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(242,43,132,0.12), transparent);
+    border-radius: 50%;
+    pointer-events: none;
+}
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    pointer-events: none;
+}
+.blob-1 {
+    width: 200px; height: 200px;
+    background: rgba(255,91,162,0.18);
+    top: -60px; right: -60px;
+    animation: floatBlob 6s ease-in-out infinite;
+}
+.blob-2 {
+    width: 140px; height: 140px;
+    background: rgba(220,44,120,0.12);
+    bottom: -40px; left: -40px;
+    animation: floatBlob 8s ease-in-out 1s infinite reverse;
+}
+@keyframes floatBlob {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(10px,-15px) scale(1.05); }
+}
+
+.receipt-card {
+    background: #fdf9f2;
+    border-radius: 10px 10px 0 0;
+    padding: 28px 24px 24px;
+    font-family: 'Share Tech Mono', monospace;
+    box-shadow: 0 4px 0 1px rgba(0,0,0,0.04), 0 20px 60px rgba(219,39,119,0.2), 0 40px 80px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 1;
+    animation: floatCard 5s ease-in-out infinite;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 23px, rgba(0,0,0,0.02) 23px, rgba(0,0,0,0.02) 24px);
+    color: #2a1808;
+}
+.receipt-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(135deg, #ff5ba2, #dc2c78);
+    border-radius: 10px 10px 0 0;
+}
+@keyframes floatCard {
+    0%, 100% { transform: translateY(0px) rotate(-1deg); }
+    50% { transform: translateY(-12px) rotate(-0.5deg); }
+}
+.rc-store { text-align:center;font-size:14px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:3px;color:#1a0d08; }
+.rc-div { border:none;border-top:1px dashed #d4c0a8;margin:8px 0; }
+.rc-div-solid { border:none;border-top:2px solid #1a0d08;margin:8px 0; }
+.rc-row { display:flex;justify-content:space-between;font-size:9px;color:#a08870;padding:2px 0; }
+.rc-item-row { display:flex;justify-content:space-between;font-size:10px;color:#2a1808;padding:3px 0;border-bottom:1px dotted #ede0cc; }
+.rc-total { display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#1a0d08;padding:4px 0; }
+.rc-total-amt { background:linear-gradient(135deg,#ff5ba2,#dc2c78);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+.rc-footer { text-align:center;font-size:8px;color:#c0a888;margin-top:10px;letter-spacing:0.5px;line-height:1.8; }
+.rc-badge { display:inline-block;border:1px solid rgba(242,43,132,0.25);border-radius:4px;padding:2px 8px;font-size:7px;color:#f22b84;margin-top:4px; }
+.receipt-tear-bottom {
+    height: 16px; background: #fdf9f2; position: relative; overflow: hidden;
+}
+.receipt-tear-bottom::after {
+    content: ''; position: absolute; bottom: 0; left: -1%; width: 102%; height: 16px;
+    background: transparent;
+    border-bottom: 16px solid #fbedf3;
+    clip-path: polygon(0% 100%,1.5% 0%,3% 100%,4.5% 0%,6% 100%,7.5% 0%,9% 100%,10.5% 0%,12% 100%,13.5% 0%,15% 100%,16.5% 0%,18% 100%,19.5% 0%,21% 100%,22.5% 0%,24% 100%,25.5% 0%,27% 100%,28.5% 0%,30% 100%,31.5% 0%,33% 100%,34.5% 0%,36% 100%,37.5% 0%,39% 100%,40.5% 0%,42% 100%,43.5% 0%,45% 100%,46.5% 0%,48% 100%,49.5% 0%,51% 100%,52.5% 0%,54% 100%,55.5% 0%,57% 100%,58.5% 0%,60% 100%,61.5% 0%,63% 100%,64.5% 0%,66% 100%,67.5% 0%,69% 100%,70.5% 0%,72% 100%,73.5% 0%,75% 100%,76.5% 0%,78% 100%,79.5% 0%,81% 100%,82.5% 0%,84% 100%,85.5% 0%,87% 100%,88.5% 0%,90% 100%,91.5% 0%,93% 100%,94.5% 0%,96% 100%,97.5% 0%,99% 100%,100% 0%,100% 100%);
+}
+[data-theme="dark"] .receipt-tear-bottom::after { border-bottom-color: #121212; }
+[data-theme="dark"] .receipt-card {
+    background: #1e1208;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 23px, rgba(255,255,255,0.02) 23px, rgba(255,255,255,0.02) 24px);
+    color: #e8d5c0;
+}
+[data-theme="dark"] .rc-store { color: #f0e0d0; }
+[data-theme="dark"] .rc-div { border-top-color: #3a2a1a; }
+[data-theme="dark"] .rc-div-solid { border-top-color: #e8d5c0; }
+[data-theme="dark"] .rc-row { color: #8a7060; }
+[data-theme="dark"] .rc-item-row { color: #e8d5c0; border-bottom-color: #2a1a0a; }
+[data-theme="dark"] .rc-total { color: #f0e0d0; }
+[data-theme="dark"] .rc-footer { color: #8a7060; }
+
+.receipt-badge-pill {
+    position: absolute;
+    top: 20px; right: -80px;
+    background: var(--pill-bg);
+    border: 1.5px solid var(--pink-border);
+    border-radius: 30px;
+    padding: 8px 14px;
+    display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 4px 16px rgba(219,39,119,0.12);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; font-weight: 600;
+    color: var(--text-main);
+    animation: floatPill1 4s ease-in-out infinite;
+    white-space: nowrap;
+    z-index: 10;
+}
+.receipt-badge-pill-2 {
+    position: absolute;
+    bottom: 30px; left: -100px;
+    background: var(--pill-bg);
+    border: 1.5px solid var(--pink-border);
+    border-radius: 30px;
+    padding: 8px 14px;
+    display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 4px 16px rgba(219,39,119,0.12);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; font-weight: 600;
+    color: var(--text-main);
+    animation: floatPill2 5s ease-in-out 0.5s infinite;
+    white-space: nowrap;
+    z-index: 10;
+}
+.pill-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: linear-gradient(135deg, #ff5ba2, #dc2c78);
+    flex-shrink: 0;
+}
+@keyframes floatPill1 { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes floatPill2 { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+/* ── DIVIDER ── */
+.section-divider {
+    max-width: 1170px; margin: 0 auto;
+    padding: 0 40px;
+    display: flex; align-items: center; gap: 20px;
+}
+.section-divider::before, .section-divider::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(242,43,132,0.2), transparent);
+}
+.divider-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px; letter-spacing: 3px;
+    color: #c084a0; text-transform: uppercase; white-space: nowrap;
+}
+
+/* ── SECTIONS ── */
+.section { max-width: 1170px; margin: 80px auto; padding: 0 40px; }
+.section-header { text-align: center; margin-bottom: 60px; }
+.section-eyebrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px; letter-spacing: 3px;
+    color: #c084a0; text-transform: uppercase; margin-bottom: 12px;
+}
+.section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(32px, 4vw, 48px); font-weight: 700;
+    color: var(--text-main); letter-spacing: -1.5px; line-height: 1.1;
+}
+.section-title span { color: var(--pink); }
+.section-sub {
+    font-size: 16px; color: var(--text-sub);
+    font-weight: 500; margin-top: 12px; max-width: 500px; margin-left: auto; margin-right: auto;
+    line-height: 1.7;
+}
+
+.steps-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.step-card {
+    background: var(--card-bg);
+    border: 1px solid var(--pink-border);
+    border-radius: 20px; padding: 32px 28px;
+    position: relative; overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(219,39,119,0.06);
+}
+.step-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(219,39,119,0.15); border-color: rgba(242,43,132,0.3); }
+.step-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 64px; font-weight: 700;
+    color: rgba(242,43,132,0.08);
+    position: absolute; top: 12px; right: 20px;
+    line-height: 1; pointer-events: none;
+}
+.step-icon {
+    width: 48px; height: 48px;
+    background: var(--step-icon-bg);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 18px;
+    border: 1px solid rgba(242,43,132,0.12);
+}
+.step-icon svg { width: 22px; height: 22px; stroke: var(--pink); }
+.step-title { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; letter-spacing: -0.3px; overflow-wrap: break-word; }
+.step-desc { font-size: 14px; color: var(--text-sub); font-weight: 500; line-height: 1.65; overflow-wrap: break-word; }
+
+.features-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.feature-card {
+    background: var(--card-bg);
+    border: 1px solid var(--pink-border);
+    border-radius: 20px; padding: 28px;
+    display: flex; gap: 18px; align-items: flex-start;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(219,39,119,0.06);
+}
+.feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(219,39,119,0.13); border-color: rgba(242,43,132,0.25); }
+.feature-icon {
+    width: 44px; height: 44px; flex-shrink: 0;
+    background: linear-gradient(135deg, #ff5ba2, #dc2c78);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+}
+.feature-icon svg { width: 20px; height: 20px; stroke: white; fill: none; }
+.feature-title { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 6px; overflow-wrap: break-word; }
+.feature-desc { font-size: 13.5px; color: var(--text-sub); font-weight: 500; line-height: 1.6; overflow-wrap: break-word; }
+
+.highlight-strip {
+    background: linear-gradient(135deg, #ff5ba2 0%, #dc2c78 100%);
+    padding: 60px 40px; text-align: center;
+    position: relative; overflow: hidden; margin: 80px 0;
+}
+.highlight-strip::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: url('/static/back_drop/leaf.png');
+    background-repeat: repeat; background-size: 200px auto;
+    opacity: 0.07; pointer-events: none;
+}
+.highlight-strip h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(28px, 4vw, 44px); font-weight: 700; color: white; letter-spacing: -1.5px; margin-bottom: 16px; position: relative; }
+.highlight-strip p { color: rgba(255,255,255,0.85); font-size: 16px; font-weight: 500; max-width: 540px; margin: 0 auto 32px; line-height: 1.65; position: relative; }
+.highlight-strip .btn-white {
+    background: white; color: var(--pink);
+    border: none; padding: 15px 40px; border-radius: 12px;
+    cursor: pointer; font-weight: 700; font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px; transition: all 0.3s ease; text-decoration: none;
+    display: inline-block; position: relative;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+}
+.highlight-strip .btn-white:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(0,0,0,0.2); }
+
+footer {
+    background: linear-gradient(135deg, #ff5ba2 0%, #dc2c78 100%);
+    padding: 32px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+}
+.footer-brand { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: white; }
+.footer-brand span { opacity: 0.7; font-weight: 500; font-size: 13px; display: block; margin-top: 2px; }
+.footer-copy { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 1.5px; color: rgba(255,255,255,0.6); }
+
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+[data-theme="dark"] .btn-secondary { border-color: rgba(242,43,132,0.3); color: var(--pink); }
+[data-theme="dark"] .btn-secondary:hover { background: rgba(242,43,132,0.1); border-color: var(--pink); }
+[data-theme="dark"] .hero-stat-divider { background: rgba(255,255,255,0.08); }
+[data-theme="dark"] .section-divider::before, [data-theme="dark"] .section-divider::after { background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent); }
+[data-theme="dark"] .step-num { color: rgba(242,43,132,0.12); }
+
+@media (max-width: 900px) {
+    .hero { flex-direction: column; padding: 60px 24px 40px; gap: 48px; text-align: center; }
+    .hero-eyebrow { justify-content: center; }
+    .hero-actions { justify-content: center; }
+    .hero-stats { justify-content: center; }
+    .hero-right { width: 100%; }
+    .receipt-badge-pill, .receipt-badge-pill-2 { display: none; }
+    .steps-grid { grid-template-columns: minmax(0, 1fr); }
+    .features-grid { grid-template-columns: minmax(0, 1fr); }
+    .section { padding: 0 20px; }
+    footer { justify-content: center; text-align: center; }
+}
+@media (max-width: 600px) {
+    .navbar { padding: 12px 20px; }
+    .hero-h1 { letter-spacing: -2px; }
+    .nav-links .nav-link { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ VIDEO INTRO ══════════════ -->
+<div id="intro-screen">
+    <!-- Video starts muted (required by browsers), audio enabled after tap -->
+    <video id="intro-video" autoplay muted playsinline>
+        <source src="/static/back_drop/Receipt_and_Invoice_Digiti.mp4" type="video/mp4">
+    </video>
+
+    <div class="video-progress">
+        <div class="video-progress-fill" id="videoProgressFill"></div>
+    </div>
+
+    <!-- Bottom-right controls: mute toggle + skip -->
+    <div class="intro-controls">
+        <button id="mute-toggle" title="Toggle mute">
+            <!-- Muted icon (default, since video starts muted) -->
+            <svg id="icon-sound-off" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block">
+                <path d="M11 5L6 9H2v6h4l5 4V5z" fill="white"/>
+                <path d="M23 9l-6 6M17 9l6 6" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <!-- Sound on icon -->
+            <svg id="icon-sound-on" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:none">
+                <path d="M11 5L6 9H2v6h4l5 4V5z" fill="white"/>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </button>
+        <button class="skip-btn" onclick="skipIntro()">Skip intro ›</button>
+    </div>
+</div>
+
+<!-- ══════════════ LANDING PAGE ══════════════ -->
+<div id="landing-page">
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <a href="#" class="nav-logo">Receipt<span>& Invoice Digitizer</span></a>
+        <nav class="nav-links">
+            <a href="#how-it-works" class="nav-link">How it works</a>
+            <a href="#features" class="nav-link">Features</a>
+            <button id="themeToggle" class="nav-link" style="background:none;border:none;cursor:pointer;padding:8px 12px;"></button>
+            <a href="/login" class="nav-cta">Get Started →</a>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-left">
+            <div class="hero-eyebrow">AI-Powered · Instant · Paperless</div>
+            <h1 class="hero-h1">
+                <span class="word-line"><span class="word-inner">Your Receipts,</span></span>
+                <span class="word-line"><span class="word-inner">Digitized in</span></span>
+                <span class="word-line"><span class="word-inner">Seconds.</span></span>
+            </h1>
+            <p class="hero-sub">
+                Upload any receipt or invoice — our AI reads, extracts, and organizes every detail instantly. Track spending, manage bills, and go completely paperless.
+            </p>
+            <div class="hero-actions">
+                <a href="/login" class="btn-primary">
+                    Start for Free
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <a href="#how-it-works" class="btn-secondary">See how it works</a>
+            </div>
+            <div class="hero-stats">
+                <div>
+                    <div class="hero-stat-num">AI</div>
+                    <div class="hero-stat-label">Powered</div>
+                </div>
+                <div class="hero-stat-divider"></div>
+                <div>
+                    <div class="hero-stat-num">100%</div>
+                    <div class="hero-stat-label">Accurate</div>
+                </div>
+                <div class="hero-stat-divider"></div>
+                <div>
+                    <div class="hero-stat-num">&lt;5s</div>
+                    <div class="hero-stat-label">Processing</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-right">
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+            <div class="receipt-mockup-wrap">
+                <div class="receipt-badge-pill">
+                    <div class="pill-dot"></div>
+                    AI extracted ✓
+                </div>
+                <div class="receipt-badge-pill-2">
+                    <div class="pill-dot"></div>
+                    Saved to dashboard
+                </div>
+                <div class="receipt-card">
+                    <div class="rc-store">Kajaria Ceramics</div>
+                    <hr class="rc-div-solid">
+                    <div class="rc-row"><span>DATE</span><span>18/03/2026</span></div>
+                    <div class="rc-row"><span>INVOICE NO</span><span>KJ56321</span></div>
+                    <hr class="rc-div">
+                    <div style="font-size:8px;color:#c0a080;padding:3px 0;border-bottom:1px solid #e0d0b8;display:grid;grid-template-columns:1fr 60px;margin-bottom:3px;">
+                        <span>DESCRIPTION</span><span style="text-align:right">AMOUNT</span>
+                    </div>
+                    <div class="rc-item-row"><span>Ceramics Purchase</span><span>₹48,085.00</span></div>
+                    <div class="rc-item-row" style="color:#a08870;font-size:9px;"><span>TAX / GST</span><span>₹4,808.50</span></div>
+                    <hr class="rc-div-solid">
+                    <div class="rc-total"><span>GRAND TOTAL</span><span class="rc-total-amt">₹48,085.00</span></div>
+                    <hr class="rc-div">
+                    <div class="rc-footer">
+                        THANK YOU FOR YOUR BUSINESS<br>
+                        <span class="rc-badge">DIGITIZED RECEIPT</span>
+                    </div>
+                    <div style="display:flex;justify-content:center;margin-top:10px;align-items:flex-end;">
+                        <svg width="180" height="28" viewBox="0 0 180 28">
+                            <g fill="#2a1808" opacity="0.75">
+                                <rect x="0" y="0" width="2" height="28"/><rect x="4" y="0" width="1" height="28"/><rect x="7" y="0" width="3" height="28"/><rect x="12" y="0" width="1" height="28"/><rect x="15" y="0" width="2" height="28"/><rect x="19" y="0" width="1" height="28"/><rect x="22" y="0" width="3" height="28"/><rect x="27" y="0" width="1" height="28"/><rect x="30" y="0" width="2" height="28"/><rect x="34" y="0" width="1" height="28"/><rect x="37" y="0" width="3" height="28"/><rect x="42" y="0" width="1" height="28"/><rect x="45" y="0" width="2" height="28"/><rect x="49" y="0" width="1" height="28"/><rect x="52" y="0" width="3" height="28"/><rect x="57" y="0" width="1" height="28"/><rect x="60" y="0" width="2" height="28"/><rect x="64" y="0" width="1" height="28"/><rect x="67" y="0" width="3" height="28"/><rect x="72" y="0" width="1" height="28"/><rect x="75" y="0" width="2" height="28"/><rect x="79" y="0" width="1" height="28"/><rect x="82" y="0" width="3" height="28"/><rect x="87" y="0" width="1" height="28"/><rect x="90" y="0" width="2" height="28"/><rect x="94" y="0" width="1" height="28"/><rect x="97" y="0" width="3" height="28"/><rect x="102" y="0" width="1" height="28"/><rect x="105" y="0" width="2" height="28"/><rect x="109" y="0" width="1" height="28"/><rect x="112" y="0" width="3" height="28"/><rect x="117" y="0" width="1" height="28"/><rect x="120" y="0" width="2" height="28"/><rect x="124" y="0" width="1" height="28"/><rect x="127" y="0" width="3" height="28"/><rect x="132" y="0" width="1" height="28"/><rect x="135" y="0" width="2" height="28"/><rect x="139" y="0" width="1" height="28"/><rect x="142" y="0" width="3" height="28"/><rect x="147" y="0" width="1" height="28"/><rect x="150" y="0" width="2" height="28"/><rect x="154" y="0" width="1" height="28"/><rect x="157" y="0" width="3" height="28"/><rect x="162" y="0" width="1" height="28"/><rect x="165" y="0" width="2" height="28"/><rect x="169" y="0" width="1" height="28"/><rect x="172" y="0" width="3" height="28"/><rect x="177" y="0" width="2" height="28"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <div style="font-family:'Share Tech Mono',monospace;font-size:7px;text-align:center;color:#c0a880;margin-top:3px;letter-spacing:1px;">KJ56321</div>
+                </div>
+                <div class="receipt-tear-bottom"></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"><div class="divider-label">How it works</div></div>
+
+    <section class="section" id="how-it-works">
+        <div class="section-header reveal">
+            <div class="section-eyebrow">▸ Simple 3-step process</div>
+            <h2 class="section-title">From paper to digital <span>in moments</span></h2>
+            <p class="section-sub">No manual typing. No spreadsheets. Just upload and let the AI do the work.</p>
+        </div>
+        <div class="steps-grid">
+            <div class="step-card reveal" style="transition-delay:0.1s">
+                <div class="step-num">01</div>
+                <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+                <div class="step-title">Upload Your Receipt</div>
+                <div class="step-desc">Drag & drop or select any receipt or invoice — JPG, PNG, or PDF. Any format works, from any vendor.</div>
+            </div>
+            <div class="step-card reveal" style="transition-delay:0.2s">
+                <div class="step-num">02</div>
+                <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+                <div class="step-title">AI Extracts Everything</div>
+                <div class="step-desc">Our AI instantly reads vendor name, date, invoice number, line items, tax, and total — with high accuracy.</div>
+            </div>
+            <div class="step-card reveal" style="transition-delay:0.3s">
+                <div class="step-num">03</div>
+                <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></div>
+                <div class="step-title">View Your Clean Bill</div>
+                <div class="step-desc">Get a beautiful digital receipt, track your spending analytics, print, or export. Your data, organized perfectly.</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider" style="margin-top:80px;"><div class="divider-label">Features</div></div>
+
+    <section class="section" id="features">
+        <div class="section-header reveal">
+            <div class="section-eyebrow">▸ Everything you need</div>
+            <h2 class="section-title">Built for <span>real bill management</span></h2>
+            <p class="section-sub">A complete toolkit to handle every receipt and invoice you'll ever deal with.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card reveal" style="transition-delay:0.05s">
+                <div class="feature-icon"><svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 6v6l4 2"/></svg></div>
+                <div><div class="feature-title">Instant AI Extraction</div><div class="feature-desc">Upload a photo of any receipt — our AI reads vendor, date, invoice number, items, tax and total in under 5 seconds.</div></div>
+            </div>
+            <div class="feature-card reveal" style="transition-delay:0.1s">
+                <div class="feature-icon"><svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+                <div><div class="feature-title">Spending Analytics</div><div class="feature-desc">Visual charts of your spending over time. Track totals, taxes, averages, and receipt count at a glance on your dashboard.</div></div>
+            </div>
+            <div class="feature-card reveal" style="transition-delay:0.15s">
+                <div class="feature-icon"><svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 9h6M9 13h4"/></svg></div>
+                <div><div class="feature-title">Bill Digitizer</div><div class="feature-desc">Turn any uploaded receipt into a clean, professional digital bill you can print or share — with a beautiful thermal receipt design.</div></div>
+            </div>
+            <div class="feature-card reveal" style="transition-delay:0.2s">
+                <div class="feature-icon"><svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div>
+                <div><div class="feature-title">Multi-Language Support</div><div class="feature-desc">Full i18n support — use the app in English, Hindi, Telugu, Tamil, Kannada, Malayalam and more.</div></div>
+            </div>
+            <div class="feature-card reveal" style="transition-delay:0.25s">
+                <div class="feature-icon"><svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+                <div><div class="feature-title">AI Chat Assistant</div><div class="feature-desc">Ask our built-in AI assistant anything about your receipts and expenses. Get answers in natural language, instantly.</div></div>
+            </div>
+            <div class="feature-card reveal" style="transition-delay:0.3s">
+                <div class="feature-icon"><svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                <div><div class="feature-title">Secure & Private</div><div class="feature-desc">Your receipts and data are stored securely. Role-based access control means only the right people see the right data.</div></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="highlight-strip">
+        <h2>Ready to go paperless?</h2>
+        <p>Join and start digitizing your receipts and invoices today. It's free to get started — no credit card needed.</p>
+        <a href="/login" class="btn-white">Get Started Free →</a>
+    </div>
+
+    <footer>
+        <div class="footer-brand">Receipt & Invoice Digitizer<span>AI-powered bill management</span></div>
+        <div class="footer-copy">© 2026 · BUILT WITH ♥</div>
+    </footer>
+
+</div>
+
+<script>
+// ── THEME TOGGLE ──
+const themeToggle = document.getElementById('themeToggle');
+const savedTheme  = localStorage.getItem('theme') || 'light';
+document.documentElement.setAttribute('data-theme', savedTheme);
+
+function updateThemeIcon(theme) {
+    themeToggle.innerHTML = theme === 'dark'
+        ? '<img src="/static/back_drop/sun.png" alt="Light mode" style="width:22px;height:22px;object-fit:contain;display:block;">'
+        : '<img src="/static/back_drop/moon.png" alt="Dark mode" style="width:22px;height:22px;object-fit:contain;display:block;">';
+}
+updateThemeIcon(savedTheme);
+themeToggle.onclick = () => {
+    const current  = document.documentElement.getAttribute('data-theme');
+    const newTheme = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+};
+
+// ── VIDEO INTRO WITH AUDIO ──
+const introScreen    = document.getElementById('intro-screen');
+const landingPage    = document.getElementById('landing-page');
+const video          = document.getElementById('intro-video');
+const fillBar        = document.getElementById('videoProgressFill');
+const muteToggle     = document.getElementById('mute-toggle');
+const iconOn         = document.getElementById('icon-sound-on');
+const iconOff        = document.getElementById('icon-sound-off');
+
+function showLanding() {
+    introScreen.classList.add('hidden');
+    landingPage.classList.add('visible');
+    video.pause();
+    checkReveal();
+}
+
+function skipIntro() { showLanding(); }
+
+// Mute toggle button
+muteToggle.addEventListener('click', () => {
+    video.muted = !video.muted;
+    updateMuteIcon();
+});
+
+function updateMuteIcon() {
+    if (video.muted) {
+        iconOn.style.display  = 'none';
+        iconOff.style.display = 'block';
+    } else {
+        iconOn.style.display  = 'block';
+        iconOff.style.display = 'none';
+    }
+}
+
+// Progress bar
+video.addEventListener('timeupdate', () => {
+    if (video.duration) {
+        fillBar.style.width = (video.currentTime / video.duration * 100) + '%';
+    }
+});
+
+video.addEventListener('ended', showLanding);
+video.addEventListener('error', () => setTimeout(showLanding, 800));
+
+// Fallback if video doesn't load
+setTimeout(() => {
+    if (!video.duration && !introScreen.classList.contains('hidden')) {
+        showLanding();
+    }
+}, 3000);
+
+// ── SCROLL REVEAL ──
+function checkReveal() {
+    document.querySelectorAll('.reveal').forEach(el => {
+        if (el.getBoundingClientRect().top < window.innerHeight - 60) {
+            el.classList.add('visible');
+        }
+    });
+}
+window.addEventListener('scroll', checkReveal);
+document.addEventListener('DOMContentLoaded', checkReveal);
+</script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+{
+  "title": "ರಸೀದಿ ಮತ್ತು ಇನ್ವಾಯ್ಸ್ ಡಿಜಿಟೈಜರ್",
+  "subtitle": "AI-ಚಾಲಿತ ರಸೀದಿ ವಿಶ್ಲೇಷಣೆ ಮತ್ತು ಸಂಗ್ರಹಣೆ",
+
+  "welcome": "ಮರಳಿ ಸ್ವಾಗತ",
+
+  "username_label": "ಬಳಕೆದಾರ ಹೆಸರು ಅಥವಾ ಇಮೇಲ್",
+  "username_placeholder": "ನಿಮ್ಮ ಬಳಕೆದಾರ ಹೆಸರು ಅಥವಾ ಇಮೇಲ್ ನಮೂದಿಸಿ",
+
+  "password_label": "ಪಾಸ್‌ವರ್ಡ್",
+  "password_placeholder": "ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ",
+
+  "signin": "ಸೈನ್ ಇನ್ ಮಾಡಿ",
+  "forgot": "ಪಾಸ್‌ವರ್ಡ್ ಮರೆತಿದ್ದೀರಾ?",
+  "create": "ಖಾತೆ ರಚಿಸಿ",
+
+  "or_signin_with": "ಅಥವಾ ಇದರ ಮೂಲಕ ಸೈನ್ ಇನ್ ಮಾಡಿ",
+
+  "forgot_title": "ಪಾಸ್‌ವರ್ಡ್ ಮರೆತಿದ್ದೀರಾ?",
+  "forgot_subtitle": "ಚಿಂತಿಸಬೇಡಿ — ನಿಮ್ಮ ಇಮೇಲ್ ನಮೂದಿಸಿ, ನಾವು ರೀಸೆಟ್ ಲಿಂಕ್ ಕಳುಹಿಸುತ್ತೇವೆ.",
+  "forgot_btn": "ರೀಸೆಟ್ ಲಿಂಕ್ ಕಳುಹಿಸಿ",
+  "forgot_success_msg": "ನಿಮ್ಮ ಇನ್‌ಬಾಕ್ಸ್ ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಸೂಚನೆಗಳನ್ನು ಅನುಸರಿಸಿ.",
+
+  "email_label": "ಇಮೇಲ್ ವಿಳಾಸ",
+  "email_placeholder": "you@example.com",
+
+  "send_link": "ರೀಸೆಟ್ ಲಿಂಕ್ ಕಳುಹಿಸಿ",
+  "sending": "ಕಳುಹಿಸುತ್ತಿದ್ದೇವೆ…",
+
+  "reset_success": "ನಾವು ರೀಸೆಟ್ ಲಿಂಕ್ ಕಳುಹಿಸಿದ್ದೇವೆ",
+  "check_inbox": "ನಿಮ್ಮ ಇನ್‌ಬಾಕ್ಸ್ ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಸೂಚನೆಗಳನ್ನು ಅನುಸರಿಸಿ.",
+
+  "back_to_login": "← ಸೈನ್ ಇನ್‌ಗೆ ಹಿಂತಿರುಗಿ",
+  "back_signin": "← ಸೈನ್ ಇನ್‌ಗೆ ಹಿಂತಿರುಗಿ",
+
+  "register_title": "ಖಾತೆ ರಚಿಸಿ",
+  "create_account": "ಖಾತೆ ರಚಿಸಿ",
+  "create_account_btn": "ಖಾತೆ ರಚಿಸಿ",
+  "register_btn": "ಖಾತೆ ರಚಿಸಿ",
+  "register_username_placeholder": "ಬಳಕೆದಾರ ಹೆಸರು ಆರಿಸಿ",
+  "register_password_placeholder": "ಪಾಸ್‌ವರ್ಡ್ ರಚಿಸಿ",
+
+  "email": "ಇಮೇಲ್",
+  "password": "ಪಾಸ್‌ವರ್ಡ್",
+  "phone": "ಫೋನ್",
+  "phone_label": "ಫೋನ್",
+  "phone_placeholder": "+91 00000 00000",
+
+  "already_account": "ಈಗಾಗಲೇ ಖಾತೆ ಇದೆಯೇ?",
+  "signin_link": "ಸೈನ್ ಇನ್ ಮಾಡಿ",
+
+  "reset_title": "ಪಾಸ್‌ವರ್ಡ್ ರೀಸೆಟ್ ಮಾಡಿ",
+  "reset_password": "ಪಾಸ್‌ವರ್ಡ್ ರೀಸೆಟ್ ಮಾಡಿ",
+  "reset_btn": "ಪಾಸ್‌ವರ್ಡ್ ರೀಸೆಟ್ ಮಾಡಿ",
+
+  "new_password_label": "ಹೊಸ ಪಾಸ್‌ವರ್ಡ್",
+  "new_password_placeholder": "ಹೊಸ ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ",
+
+  "confirm_password_label": "ಪಾಸ್‌ವರ್ಡ್ ದೃಢಪಡಿಸಿ",
+  "confirm_password_placeholder": "ಹೊಸ ಪಾಸ್‌ವರ್ಡ್ ಮತ್ತೆ ನಮೂದಿಸಿ",
+
+  "reset_password_btn": "ಪಾಸ್‌ವರ್ಡ್ ರೀಸೆಟ್ ಮಾಡಿ",
+  "remember_password": "ಪಾಸ್‌ವರ್ಡ್ ನೆನಪಿದೆಯೇ?",
+
+  "dashboard": "ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+  "analytics": "ವಿಶ್ಲೇಷಣೆ",
+  "logout": "ಲಾಗ್ ಔಟ್",
+  "welcome_user": "ಸ್ವಾಗತ, ಬಳಕೆದಾರ",
+
+  "upload_title": "ರಸೀದಿ / ಇನ್ವಾಯ್ಸ್ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ",
+  "upload_subtitle": "ಎಳೆದು ಬಿಡಿ ಅಥವಾ ಆಯ್ಕೆ ಮಾಡಲು ಕ್ಲಿಕ್ ಮಾಡಿ",
+  "select_file": "ಫೈಲ್ ಆಯ್ಕೆ ಮಾಡಿ",
+
+  "your_receipts": "ನಿಮ್ಮ ರಸೀದಿಗಳು",
+
+  "search_vendor": "ಮಾರಾಟಗಾರರಿಂದ ಹುಡುಕಿ...",
+  "date": "ದಿನಾಂಕ",
+  "vendor": "ಮಾರಾಟಗಾರ",
+  "invoice": "ಇನ್ವಾಯ್ಸ್ #",
+  "amount": "ಮೊತ್ತ",
+  "tax": "ತೆರಿಗೆ",
+  "actions": "ಕ್ರಿಯೆಗಳು",
+
+  "view": "ವೀಕ್ಷಿಸಿ",
+  "delete": "ಅಳಿಸಿ",
+
+  "no_receipts": "ಇನ್ನೂ ರಸೀದಿಗಳು ಅಪ್‌ಲೋಡ್ ಮಾಡಲಾಗಿಲ್ಲ. ನಿಮ್ಮ ಮೊದಲ ರಸೀದಿ ಅಪ್‌ಲೋಡ್ ಮಾಡುವ ಮೂಲಕ ಪ್ರಾರಂಭಿಸಿ!",
+
+  "upload_success": "ರಸೀದಿ ಯಶಸ್ವಿಯಾಗಿ ಅಪ್‌ಲೋಡ್ ಆಗಿದೆ!",
+  "delete_confirm": "ನೀವು ಈ ರಸೀದಿ ಅಳಿಸಲು ಬಯಸುವಿರಾ?",
+  "delete_success": "ರಸೀದಿ ಅಳಿಸಲಾಗಿದೆ",
+
+  "spending_over_time": "ಕಾಲಾನಂತರದಲ್ಲಿ ಖರ್ಚು",
+  "total_spent": "ಒಟ್ಟು ಖರ್ಚು",
+  "total_tax": "ಒಟ್ಟು ತೆರಿಗೆ",
+  "receipts": "ರಸೀದಿಗಳು",
+  "avg_receipt": "ರಸೀದಿಗೆ ಸರಾಸರಿ",
+
+  "bill_digitizer": "ಬಿಲ್ ಡಿಜಿಟೈಜರ್",
+  "bill_digitizer_subtitle": "ಡಿಜಿಟಲ್ ಪ್ರತಿ ರಚಿಸಲು ಯಾವುದಾದರೂ ರಸೀದಿ ಆಯ್ಕೆ ಮಾಡಿ",
+  "your_receipts_panel": "▸ ನಿಮ್ಮ ರಸೀದಿಗಳು — ಒಂದು ಆಯ್ಕೆ ಮಾಡಿ",
+  "digitized_bill_panel": "▸ ಡಿಜಿಟೈಜ್ಡ್ ಬಿಲ್",
+  "loading_receipts": "ರಸೀದಿಗಳು ಲೋಡ್ ಆಗುತ್ತಿವೆ…",
+  "no_receipts_found": "ರಸೀದಿಗಳು ಕಂಡುಬಂದಿಲ್ಲ",
+  "upload_from_dashboard": "ಮೊದಲು ಡ್ಯಾಶ್‌ಬೋರ್ಡ್‌ನಿಂದ ಬಿಲ್‌ಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ",
+  "error_loading": "ರಸೀದಿಗಳನ್ನು ಲೋಡ್ ಮಾಡುವಲ್ಲಿ ದೋಷ",
+  "no_results_found": "ಫಲಿತಾಂಶಗಳು ಕಂಡುಬಂದಿಲ್ಲ",
+  "unknown_vendor": "ಅಜ್ಞಾತ ಮಾರಾಟಗಾರ",
+  "no_invoice": "ಇನ್ವಾಯ್ಸ್ ಇಲ್ಲ",
+  "select_receipt_prompt": "ಒಂದು ರಸೀದಿ ಆಯ್ಕೆ ಮಾಡಿ",
+  "select_receipt_hint": "ಡಿಜಿಟೈಜ್ ಮಾಡಲು ಎಡಭಾಗದ ರಸೀದಿಯನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ",
+  "print_btn": "🖨 ಮುದ್ರಿಸಿ",
+  "view_original_btn": "ಮೂಲ ನೋಡಿ",
+  "grand_total": "ಒಟ್ಟು ಮೊತ್ತ",
+  "thank_you_business": "ನಿಮ್ಮ ವ್ಯಾಪಾರಕ್ಕೆ ಧನ್ಯವಾದಗಳು",
+  "digitized_receipt": "ಡಿಜಿಟೈಜ್ಡ್ ರಸೀದಿ",
+  "description": "ವಿವರಣೆ",
+  "admin_dashboard": "ಅಡ್ಮಿನ್ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+  "admin_subtitle": "ಸಿಸ್ಟಮ್ ಅವಲೋಕನ ಮತ್ತು ವಿಶ್ಲೇಷಣೆ",
+  "total_users": "ಒಟ್ಟು ಬಳಕೆದಾರರು",
+  "total_uploads": "ಒಟ್ಟು ಅಪ್‌ಲೋಡ್‌ಗಳು",
+  "total_processed": "ಒಟ್ಟು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಿದ ಫೈಲ್‌ಗಳು",
+  "system_analytics": "ಸಿಸ್ಟಮ್ ವಿಶ್ಲೇಷಣೆ ಅವಲೋಕನ",
+  "back_to_dashboard": "← ಬಳಕೆದಾರ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್‌ಗೆ ಹಿಂತಿರುಗಿ",
+  "today": "ಇಂದು",
+  "this_week": "ಈ ವಾರ",
+  "all_time": "ಎಲ್ಲಾ ಸಮಯ",
+  "uploads_today": "ಇಂದಿನ ಅಪ್‌ಲೋಡ್‌ಗಳು",
+  "uploads_week_label": "ಈ ವಾರದ ಅಪ್‌ಲೋಡ್‌ಗಳು",
+  "uploads_trend": "ಅಪ್‌ಲೋಡ್ ಟ್ರೆಂಡ್ (ಕಳೆದ 7 ದಿನಗಳು)",
+  "recent_activity": "ಇತ್ತೀಚಿನ ಅಪ್‌ಲೋಡ್ ಚಟುವಟಿಕೆ",
+  "users_overview": "ಬಳಕೆದಾರರ ಅವಲೋಕನ",
+  "user_col": "ಬಳಕೆದಾರ",
+  "username_col": "ಬಳಕೆದಾರ ಹೆಸರು",
+  "email_col": "ಇಮೇಲ್",
+  "view_bills": "ಬಿಲ್‌ಗಳನ್ನು ವೀಕ್ಷಿಸಿ",
+  "search_user": "ಬಳಕೆದಾರ ಹೆಸರಿನಿಂದ ಹುಡುಕಿ...",
+  "user_bills": "ಬಳಕೆದಾರ ಬಿಲ್‌ಗಳು",
+  "uploaded_bills": "ಅಪ್‌ಲೋಡ್ ಮಾಡಿದ ಬಿಲ್‌ಗಳು",
+  "open_btn": "ತೆರೆಯಿರಿ",
+  "no_bills": "ಈ ಬಳಕೆದಾರ ಇನ್ನೂ ಯಾವ ಬಿಲ್‌ಗಳನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿಲ್ಲ.",
+  "back_to_admin": "← ಅಡ್ಮಿನ್‌ಗೆ ಹಿಂತಿರುಗಿ"
+}
